@@ -185,6 +185,8 @@ export class Game extends Phaser.Scene {
     onPlayerHit(attack, player) {
       console.log("¡Jugador golpeado!");
 
+      console.log(Settings.getLives());
+
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);
 
@@ -192,10 +194,32 @@ export class Game extends Phaser.Scene {
       Settings.setLives(Settings.getLives() - 1);
       this.livesDisplay.removeOneLife();
 
-      // Verificar si se quedó sin vidas
+      // Ocultar jugador
+      this.player.get().setActive(false).setVisible(false).disableBody(true, true);
+
+      // Verificar si ya no tiene vidas
       if (Settings.getLives() <= 0) {
-        this.scene.start('gameover');
+        this.time.delayedCall(1000, () => {
+          this.scene.start('gameover');
+        });
+        return;
       }
+
+      // Revivir jugador tras pausa e invulnerabilidad
+      this.time.delayedCall(1500, () => {
+        const [x, y] = this.player.get().getData('posIni');
+        const player = this.player.get();
+
+        player.setActive(true).setVisible(true).setAlpha(0.1);
+        player.enableBody(true, x, y, true, true);
+
+        // Fade-in gradual
+        this.tweens.add({
+          targets: player,
+          alpha: 1,
+          duration: 1500,
+        });
+      });
     }
 
 

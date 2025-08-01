@@ -1,6 +1,7 @@
 // src/scenes/gameover.js
 
 import { Texts } from '../utils/translations.js';
+import { Settings } from '../settings.js';
 
 export class GameOver extends Phaser.Scene {
     constructor() {
