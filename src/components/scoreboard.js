@@ -16,19 +16,19 @@ export class ScoreBoard {
                 fontSize: '20px',
                 fill: '#fff',
                 fontFamily: 'Verdana'
-            }),
+            }).setDepth(1000),
 
             level: this.relatedScene.add.text(width / 2, 10, Texts.level(Settings.getLevel()), {
                 fontSize: '20px',
                 fill: '#fff',
                 fontFamily: 'Verdana'
-            }).setOrigin(0.5, 0),
+            }).setOrigin(0.5, 0).setDepth(1000),
 
             record: this.relatedScene.add.text(width - 20, 10, Texts.record(Settings.getRecord()), {
                 fontSize: '20px',
                 fill: '#fff',
                 fontFamily: 'Verdana'
-            }).setOrigin(1, 0),
+            }).setOrigin(1, 0).setDepth(1000),
         };
     }
 
