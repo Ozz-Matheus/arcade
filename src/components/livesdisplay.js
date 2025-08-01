@@ -3,6 +3,7 @@
 import { Settings } from '../settings.js';
 
 export class LivesDisplay {
+
   static ICON_WIDTH = 30;
   static ICON_HEIGHT = 30;
   static ICON_SPACING = 10;
@@ -23,7 +24,8 @@ export class LivesDisplay {
       const icon = this.relatedScene.add.image(x, y, 'player')
         .setScale(LivesDisplay.ICON_SCALE)
         .setOrigin(0, 0)
-        .setAlpha(0.8);
+        .setAlpha(0.8)
+        .setDepth(9999);
 
       this.livesGroup.add(icon);
     }

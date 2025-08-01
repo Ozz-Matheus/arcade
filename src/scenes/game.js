@@ -29,8 +29,8 @@ export class Game extends Phaser.Scene {
         this.enemies = new Enemies(this);
         this.attacks = new Attacks(this);
         this.explosions = new Explosions(this);
-        this.scoreboard = new ScoreBoard(this);
         this.livesDisplay = new LivesDisplay(this);
+        this.scoreboard = new ScoreBoard(this);
     }
 
     preload() {
