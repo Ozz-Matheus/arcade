@@ -7,6 +7,13 @@ import { Bullets } from '../components/bullets.js';
 import { Enemies } from '../components/enemies.js';
 import { Explosions } from '../components/explosions.js';
 import { Attacks } from '../components/attacks.js';
+import { Settings } from '../settings.js';
+import { Texts } from '../utils/translations.js';
+import { ScoreBoard } from '../components/scoreboard.js';
+import { LivesDisplay } from '../components/livesdisplay.js';
+
+
+
 /* ------------------------------------------------------------------------------------------ */
 
 export class Game extends Phaser.Scene {
@@ -22,6 +29,8 @@ export class Game extends Phaser.Scene {
         this.enemies = new Enemies(this);
         this.attacks = new Attacks(this);
         this.explosions = new Explosions(this);
+        this.scoreboard = new ScoreBoard(this);
+        this.livesDisplay = new LivesDisplay(this);
     }
 
     preload() {
@@ -29,6 +38,25 @@ export class Game extends Phaser.Scene {
     }
 
     create(){
+
+        Settings.setPoints(0);
+        Settings.setLevel(1);
+        Settings.setLives(3);
+
+        this.livesDisplay.create();
+
+        this.add.text(30, 30, Texts.score(0), {
+          fontSize: '32px',
+          fill: '#fff'
+        });
+
+        this.scoreText = this.add.text(20, 20, Texts.score(Settings.getPoints()), {
+          fontSize: '24px',
+          fill: '#fff'
+        });
+
+
+        this.scoreboard.create();
 
         this.bullet_sound = this.sound.add('bullet-sound');
         this.explosion_sound = this.sound.add('explosion-sound');
@@ -41,7 +69,8 @@ export class Game extends Phaser.Scene {
         this.attacks.create();
         this.explosions.create();
 
-        this.colisionDisparoEnemigos = this.physics.add.overlap(this.enemies.get(), this.bullets.get(), this.colisionDisparoVsEnemigos, null, this)
+        this.colisionDisparoEnemigos = this.physics.add.overlap(this.enemies.get(), this.bullets.get(), this.colisionDisparoVsEnemigos, null, this);
+        this.physics.add.overlap(this.attacks.get(), this.player.get(), this.onPlayerHit, null, this);
     }
 
     update() {
@@ -55,6 +84,11 @@ export class Game extends Phaser.Scene {
         this.bullets.update();
         this.enemies.update();
         this.attacks.update();
+
+
+        Settings.setPoints(Settings.getPoints() + 100);
+        this.scoreboard.updatePoints(Settings.getPoints());
+        this.scoreText.setText(Texts.score(Settings.getPoints()));
     }
 
     inicia_disparo_player(){
@@ -121,6 +155,12 @@ export class Game extends Phaser.Scene {
 
         bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
+
+        if (this.enemies.get().countActive(true) === 0) {
+          this.time.delayedCall(1000, () => {
+            this.scene.start('victory');
+          });
+        }
     }
 
     inicia_disparo_enemies(){
@@ -162,6 +202,21 @@ export class Game extends Phaser.Scene {
     }
 
 
+    onPlayerHit(attack, player) {
+      console.log("¡Jugador golpeado!");
+
+      // Desactivar ataque enemigo
+      attack.setActive(false).setVisible(false).disableBody(true, true);
+
+      // Reducir vidas y actualizar HUD
+      Settings.setLives(Settings.getLives() - 1);
+      this.livesDisplay.removeOneLife();
+
+      // Verificar si se quedó sin vidas
+      if (Settings.getLives() <= 0) {
+        this.scene.start('gameover');
+      }
+    }
 
 
 }
