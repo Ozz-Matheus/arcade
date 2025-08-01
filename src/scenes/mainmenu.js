@@ -1,10 +1,15 @@
 // src/scenes/mainmenu.js
 
 import { Texts } from '../utils/translations.js';
+import { loader } from './loader.js';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
         super({ key: 'mainmenu' });
+    }
+
+    preload() {
+        loader(this);
     }
 
     create() {

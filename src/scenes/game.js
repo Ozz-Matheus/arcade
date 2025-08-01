@@ -76,39 +76,28 @@ export class Game extends Phaser.Scene {
 
     }
 
-    inicia_disparo_player(){
+    inicia_disparo_player() {
+        if (!this.player.get().active || !this.player.get().visible) return;
 
-        if(this.player.controls.space.isDown){
-
-            if(this.time.now > this.bullets.rhythm.flag){
-
+        if (this.player.controls.space.isDown) {
+            if (this.time.now > this.bullets.rhythm.flag) {
                 console.log('bullet');
-
                 let find = false;
 
                 this.bullets.get().getChildren().forEach(bullet => {
-
-                    if(!bullet.active && !bullet.visible && !find){
-
+                    if (!bullet.active && !bullet.visible && !find) {
                         find = true;
-
                         bullet.setActive(true).setVisible(true).enableBody(true, true);
-                        bullet.setX( this.player.get().x );
-                        bullet.setY( this.player.get().y - Math.floor( this.player.get().body.height / 2 ) );
-                        bullet.setVelocityY( Bullets.SPEED_ON_THE_Y_AXIS );
+                        bullet.setX(this.player.get().x);
+                        bullet.setY(this.player.get().y - Math.floor(this.player.get().body.height / 2));
+                        bullet.setVelocityY(Bullets.SPEED_ON_THE_Y_AXIS);
                         bullet.setAlpha(0.9);
                         this.bullet_sound.play();
-
-
                     }
-
-
                 });
 
-                this.bullets.rhythm.flag = this.time.now +this.bullets.rhythm.bullets;
-
+                this.bullets.rhythm.flag = this.time.now + this.bullets.rhythm.bullets;
             }
-
         }
     }
 
