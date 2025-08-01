@@ -81,7 +81,7 @@ export class Game extends Phaser.Scene {
 
         if (this.player.controls.space.isDown) {
             if (this.time.now > this.bullets.rhythm.flag) {
-                console.log('bullet');
+                //console.log('bullet');
                 let find = false;
 
                 this.bullets.get().getChildren().forEach(bullet => {
@@ -104,7 +104,7 @@ export class Game extends Phaser.Scene {
 
     colisionDisparoVsEnemigos(enemies, bullets){
 
-        console.log("explosion");
+        //console.log("explosion");
 
         let find = false;
 
@@ -145,7 +145,7 @@ export class Game extends Phaser.Scene {
 
     inicia_disparo_enemies(){
 
-        console.log("Attack");
+        //console.log("Attack");
 
         let find = false;
 
@@ -183,9 +183,8 @@ export class Game extends Phaser.Scene {
 
 
     onPlayerHit(attack, player) {
-      console.log("¡Jugador golpeado!");
 
-      console.log(Settings.getLives());
+      //console.log("¡Jugador golpeado!");
 
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);

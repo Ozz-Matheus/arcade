@@ -42,7 +42,7 @@ export class Attacks {
         };
 
 
-    	console.log(this.attacks);
+    	//console.log(this.attacks);
 
     }
 

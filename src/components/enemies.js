@@ -55,7 +55,7 @@ export class Enemies {
             JOURNEY: 60
         };
 
-    	console.log(this.enemies);
+    	//console.log(this.enemies);
 
     }
 

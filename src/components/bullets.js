@@ -42,7 +42,7 @@ export class Bullets {
         };
 
 
-    	console.log(this.bullets);
+    	//console.log(this.bullets);
 
     }
 

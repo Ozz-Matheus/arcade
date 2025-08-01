@@ -4,10 +4,10 @@ import { Settings } from '../settings.js';
 
 export class LivesDisplay {
 
-  static ICON_WIDTH = 30;
-  static ICON_HEIGHT = 30;
-  static ICON_SPACING = 10;
-  static ICON_SCALE = 0.15;
+  static ICON_WIDTH = 28;
+  static ICON_HEIGHT = 28;
+  static ICON_SPACING = 4;
+  static ICON_SCALE = 0.10;
 
   constructor(scene) {
     this.relatedScene = scene;

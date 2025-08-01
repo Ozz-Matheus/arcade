@@ -35,8 +35,8 @@ export class Player {
 
         this.controls = this.relatedScene.input.keyboard.createCursorKeys();
 
-        console.log(this.controls);
-        console.log(this.player, this.player.x, this.player.body.width, this.player.width);
+        //console.log(this.controls);
+        //console.log(this.player, this.player.x, this.player.body.width, this.player.width);
 
     }
 

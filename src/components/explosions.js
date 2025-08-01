@@ -33,7 +33,7 @@ export class Explosions{
             explosion.play('explosion-animation');
         });
 
-        console.log(this.explosions);
+        //console.log(this.explosions);
     }
 
     update() {
