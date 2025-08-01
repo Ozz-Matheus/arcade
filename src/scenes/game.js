@@ -58,15 +58,15 @@ export class Game extends Phaser.Scene {
         this.attacks.create();
         this.explosions.create();
 
-        this.colisionDisparoEnemigos = this.physics.add.overlap(this.enemies.get(), this.bullets.get(), this.colisionDisparoVsEnemigos, null, this);
+        this.physics.add.overlap(this.enemies.get(), this.bullets.get(), this.handleBulletHitsEnemy, null, this);
         this.physics.add.overlap(this.attacks.get(), this.player.get(), this.onPlayerHit, null, this);
     }
 
     update() {
 
-        this.inicia_disparo_player();
+        this.handlePlayerShooting();
 
-        this.inicia_disparo_enemies();
+        this.handleEnemyShooting();
 
         this.stars.update();
         this.player.update();
@@ -76,7 +76,10 @@ export class Game extends Phaser.Scene {
 
     }
 
-    inicia_disparo_player() {
+
+
+
+    handlePlayerShooting() {
         if (!this.player.get().active || !this.player.get().visible) return;
 
         if (this.player.controls.space.isDown) {
@@ -102,7 +105,7 @@ export class Game extends Phaser.Scene {
     }
 
 
-    colisionDisparoVsEnemigos(enemies, bullets){
+    handleBulletHitsEnemy(enemies, bullets){
 
         //console.log("explosion");
 
@@ -143,7 +146,7 @@ export class Game extends Phaser.Scene {
         }
     }
 
-    inicia_disparo_enemies(){
+    handleEnemyShooting(){
 
         //console.log("Attack");
 
@@ -159,7 +162,7 @@ export class Game extends Phaser.Scene {
 
                         find = true;
 
-                        this.settings_attacks(attack, enemy);
+                        this.configureEnemyAttack(attack, enemy);
 
                         this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
 
@@ -173,7 +176,7 @@ export class Game extends Phaser.Scene {
 
     }
 
-    settings_attacks(attack, enemy){
+    configureEnemyAttack(attack, enemy){
 
         attack.setActive(true).setVisible(true);
         attack.enableBody(true, enemy.x, enemy.y,true, true);
@@ -220,6 +223,7 @@ export class Game extends Phaser.Scene {
         });
       });
     }
+
 
 
 }
