@@ -19,6 +19,15 @@ export class GameOver extends Phaser.Scene {
             fontFamily: 'Verdana',
         }).setOrigin(0.5);
 
+        if (Settings.getPoints() >= Settings.getRecord()) {
+          Settings.setRecord(Settings.getPoints());
+          this.add.text(width / 2, height / 2 - 100, Texts.newRecord, {
+            fontSize: '32px',
+            fill: '#ff0',
+            fontFamily: 'Verdana',
+          }).setOrigin(0.5);
+        }
+
         this.input.once('pointerdown', () => {
             this.scene.start('mainmenu');
         });

@@ -45,17 +45,6 @@ export class Game extends Phaser.Scene {
 
         this.livesDisplay.create();
 
-        this.add.text(30, 30, Texts.score(0), {
-          fontSize: '32px',
-          fill: '#fff'
-        });
-
-        this.scoreText = this.add.text(20, 20, Texts.score(Settings.getPoints()), {
-          fontSize: '24px',
-          fill: '#fff'
-        });
-
-
         this.scoreboard.create();
 
         this.bullet_sound = this.sound.add('bullet-sound');
@@ -85,10 +74,6 @@ export class Game extends Phaser.Scene {
         this.enemies.update();
         this.attacks.update();
 
-
-        Settings.setPoints(Settings.getPoints() + 100);
-        this.scoreboard.updatePoints(Settings.getPoints());
-        this.scoreText.setText(Texts.score(Settings.getPoints()));
     }
 
     inicia_disparo_player(){
@@ -152,6 +137,12 @@ export class Game extends Phaser.Scene {
 
             }
         });
+
+        const score = enemies.getData('score') ?? 100;
+        Settings.setPoints(Settings.getPoints() + score);
+
+        this.scoreboard.updatePoints(Settings.getPoints());
+
 
         bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
