@@ -7,6 +7,7 @@ import { Bullets } from '../components/bullets.js';
 import { Enemies } from '../components/enemies.js';
 import { Explosions } from '../components/explosions.js';
 import { Attacks } from '../components/attacks.js';
+import { Particles } from '../components/particles.js';
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
 import { ScoreBoard } from '../components/scoreboard.js';
@@ -29,6 +30,7 @@ export class Game extends Phaser.Scene {
         this.enemies = new Enemies(this);
         this.attacks = new Attacks(this);
         this.explosions = new Explosions(this);
+        this.particles = new Particles(this);
         this.livesDisplay = new LivesDisplay(this);
         this.scoreboard = new ScoreBoard(this);
     }
@@ -57,9 +59,20 @@ export class Game extends Phaser.Scene {
         this.enemies.create();
         this.attacks.create();
         this.explosions.create();
+        this.particles.create();
 
         this.physics.add.overlap(this.enemies.get(), this.bullets.get(), this.handleBulletHitsEnemy, null, this);
-        this.physics.add.overlap(this.attacks.get(), this.player.get(), this.onPlayerHit, null, this);
+
+        this.physics.add.overlap(
+          this.attacks.get(),
+          this.player.get(),
+          this.onPlayerHit,
+          (attack, player) => {
+            return player.alpha === 1;
+          },
+          this
+        );
+
     }
 
     update() {
@@ -198,6 +211,9 @@ export class Game extends Phaser.Scene {
 
       // Ocultar jugador
       this.player.get().setActive(false).setVisible(false).disableBody(true, true);
+
+      // Efecto visual
+      this.particles.spawn(player.x, player.y);
 
       // Verificar si ya no tiene vidas
       if (Settings.getLives() <= 0) {

@@ -20,6 +20,7 @@ scene.load.spritesheet('lasers', './src/images/lasers.png', {frameWidth: 32, fra
 scene.load.spritesheet('main-enemies', './src/images/main-enemies.png', {frameWidth: 135, frameHeight: 95});
 scene.load.spritesheet('explosion', './src/images/explosion.png', {frameWidth: 32, frameHeight: 32});
 scene.load.spritesheet('flames', './src/images/flames.png', {frameWidth: 18, frameHeight: 39});
+scene.load.image('particle', './src/images/particle.png');
 
 /* ------------------------------------------------------------------------------------------ */
 
