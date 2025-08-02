@@ -1,5 +1,6 @@
 // src/scenes/gameover.js
 
+import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
 
@@ -13,10 +14,7 @@ export class GameOver extends Phaser.Scene {
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
-        this.gameoverMusic = this.sound.add('gameover-music', {
-            loop: false,
-            volume: 0.6
-        });
+        SoundManager.playMusic(this, 'gameover-music', { loop: false, volume: 0.6 });
 
         this.add.text(width / 2, height / 2, Texts.gameOver, {
             fontSize: '64px',
@@ -35,7 +33,7 @@ export class GameOver extends Phaser.Scene {
         }
 
         this.input.once('pointerdown', () => {
-            this.gameoverMusic.play();
+            this.sound.stopAll();
             this.scene.start('mainmenu');
         });
     }

@@ -1,5 +1,6 @@
 // src/scenes/victory.js
 
+import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 
 export class VictoryScreen extends Phaser.Scene {
@@ -12,10 +13,7 @@ export class VictoryScreen extends Phaser.Scene {
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
-        this.victoryMusic = this.sound.add('victory-music', {
-            loop: false,
-            volume: 0.6
-        });
+        SoundManager.playMusic(this, 'victory-music', { loop: false, volume: 0.6 });
 
         this.add.text(width / 2, height / 2, Texts.victory, {
             fontSize: '64px',
@@ -25,7 +23,7 @@ export class VictoryScreen extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
-            this.victoryMusic.play();
+            this.sound.stopAll();
             this.scene.start('mainmenu');
         });
     }
