@@ -163,6 +163,8 @@ export class Game extends Phaser.Scene {
         bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
 
+        this.particles.spawn(enemies.x, enemies.y);
+
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
             this.scene.start('victory');
@@ -222,6 +224,23 @@ export class Game extends Phaser.Scene {
 
       // Ocultar jugador
       this.player.get().setActive(false).setVisible(false).disableBody(true, true);
+
+      let find = false;
+
+      this.explosions.get().getChildren().forEach(explosion => {
+      if (!explosion.active && !explosion.visible && !find) {
+        find = true;
+        explosion.setActive(true).setVisible(true);
+        explosion.setX(player.x);
+        explosion.setY(player.y);
+        explosion.setScale(2);
+        this.explosion_sound.play();
+
+        setTimeout(() => {
+          explosion.setActive(false).setVisible(false);
+        }, Explosions.DURATION_OF_THE_EXPLOSION);
+      }
+      });
 
       // Efecto visual
       this.particles.spawn(player.x, player.y);
