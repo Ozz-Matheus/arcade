@@ -12,7 +12,8 @@ import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
 import { ScoreBoard } from '../components/scoreboard.js';
 import { LivesDisplay } from '../components/livesdisplay.js';
-
+import { FireButton } from '../components/firebutton.js';
+import { DPad } from '../components/dpad.js';
 
 
 /* ------------------------------------------------------------------------------------------ */
@@ -24,6 +25,7 @@ export class Game extends Phaser.Scene {
     }
 
     init() {
+
         this.stars = new Stars(this);
         this.player = new Player(this);
         this.bullets = new Bullets(this);
@@ -33,6 +35,11 @@ export class Game extends Phaser.Scene {
         this.particles = new Particles(this);
         this.livesDisplay = new LivesDisplay(this);
         this.scoreboard = new ScoreBoard(this);
+
+        this.fireButton = new FireButton(this);
+        this.dpadLeft = new DPad(this, { key: 'dpad-left', x: 80, y: 60 });
+        this.dpadRight = new DPad(this, { key: 'dpad-right', x: 290, y: 60 });
+
     }
 
     preload() {
@@ -73,6 +80,10 @@ export class Game extends Phaser.Scene {
           this
         );
 
+        this.fireButton.create();
+        this.dpadLeft.create();
+        this.dpadRight.create();
+
     }
 
     update() {
@@ -95,7 +106,7 @@ export class Game extends Phaser.Scene {
     handlePlayerShooting() {
         if (!this.player.get().active || !this.player.get().visible) return;
 
-        if (this.player.controls.space.isDown) {
+        if (this.player.controls.space.isDown || this.fireButton?.isDown) {
             if (this.time.now > this.bullets.rhythm.flag) {
                 //console.log('bullet');
                 let find = false;

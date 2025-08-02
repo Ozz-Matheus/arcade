@@ -42,19 +42,18 @@ export class Player {
 
 
     update() {
-
-        if (this.controls.left.isDown) {
+        if (this.controls.left.isDown || this.relatedScene.dpadLeft?.isDown) {
 
             this.player.setVelocityX(-this.player.getData('vel-x'));
 
-        } else if (this.controls.right.isDown) {
+        } else if (this.controls.right.isDown || this.relatedScene.dpadRight?.isDown) {
 
             this.player.setVelocityX(this.player.getData('vel-x'));
 
         } else {
+
             this.player.setVelocityX(0);
         }
-
     }
 
     get() {
