@@ -32,8 +32,10 @@ scene.load.image('dpad-right', './src/images/dpad-right.png');
 
 /* ------------------------------------------------------------------------------------------ */
 
+scene.load.audio('bg-music', './src/audio/bg-music.ogg');
 scene.load.audio('bullet-sound', './src/audio/bullet.mp3');
 scene.load.audio('explosion-sound', './src/audio/explosion.wav');
-
+scene.load.audio('victory-music', './src/audio/victory-music.mp3');
+scene.load.audio('gameover-music', './src/audio/gameover-music.ogg');
 
 }

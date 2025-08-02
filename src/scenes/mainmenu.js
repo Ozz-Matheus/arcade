@@ -13,9 +13,15 @@ export class MainMenu extends Phaser.Scene {
     }
 
     create() {
+
         const { width, height } = this.sys.game.config;
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
+
+        this.backgroundMusic = this.sound.add('bg-music', {
+          loop: true,
+          volume: 0.5
+        });
 
         this.add.text(width / 2, height / 2, "Phoenix", {
             fontSize: '70px',
@@ -31,6 +37,7 @@ export class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
+            this.backgroundMusic.play();
             this.scene.start('game');
         });
     }
