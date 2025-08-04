@@ -22,9 +22,13 @@ scene.load.spritesheet('explosion', './src/images/explosion.png', {frameWidth: 3
 scene.load.spritesheet('flames', './src/images/flames.png', {frameWidth: 18, frameHeight: 39});
 scene.load.image('particle', './src/images/particle.png');
 
+
+scene.load.spritesheet('virtual-gamepad', './src/images/gamepad_spritesheet.png', {
+  frameWidth: 100,
+  frameHeight: 100
+});
+
 scene.load.image('fire-button', './src/images/fire-button.png');
-scene.load.image('dpad-left', './src/images/dpad-left.png');
-scene.load.image('dpad-right', './src/images/dpad-right.png');
 
 /* ------------------------------------------------------------------------------------------ */
 

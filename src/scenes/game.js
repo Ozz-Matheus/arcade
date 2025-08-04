@@ -13,7 +13,7 @@ import { Texts } from '../utils/translations.js';
 import { ScoreBoard } from '../components/scoreboard.js';
 import { LivesDisplay } from '../components/livesdisplay.js';
 import { FireButton } from '../components/firebutton.js';
-import { DPad } from '../components/dpad.js';
+import { VirtualGamepad } from '../components/virtualgamepad.js';
 
 
 /* ------------------------------------------------------------------------------------------ */
@@ -26,6 +26,8 @@ export class Game extends Phaser.Scene {
 
     init() {
 
+        this.input.addPointer(3);
+
         this.stars = new Stars(this);
         this.player = new Player(this);
         this.bullets = new Bullets(this);
@@ -36,9 +38,9 @@ export class Game extends Phaser.Scene {
         this.livesDisplay = new LivesDisplay(this);
         this.scoreboard = new ScoreBoard(this);
 
+        this.virtualGamepad = new VirtualGamepad(this);
+
         this.fireButton = new FireButton(this);
-        this.dpadLeft = new DPad(this, { key: 'dpad-left', x: 80, y: 60 });
-        this.dpadRight = new DPad(this, { key: 'dpad-right', x: 290, y: 60 });
 
     }
 
@@ -80,9 +82,9 @@ export class Game extends Phaser.Scene {
           this
         );
 
+        this.virtualGamepad.createJoystick(100, 520, 1.2);
+
         this.fireButton.create();
-        this.dpadLeft.create();
-        this.dpadRight.create();
 
     }
 
@@ -97,6 +99,14 @@ export class Game extends Phaser.Scene {
         this.bullets.update();
         this.enemies.update();
         this.attacks.update();
+
+        const props = this.virtualGamepad.getProperties();
+
+        if (props.left) {
+          this.player.get().setVelocityX(-Player.SPEED_ON_THE_X_AXIS);
+        } else if (props.right) {
+          this.player.get().setVelocityX(Player.SPEED_ON_THE_X_AXIS);
+        }
 
     }
 
