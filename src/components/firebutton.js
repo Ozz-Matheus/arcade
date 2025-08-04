@@ -12,13 +12,13 @@ export class FireButton {
         const height = this.scene.sys.game.config.height;
         const scale = 1.2;
 
-        this.button = this.scene.add.sprite(width - 100, height - 90, 'virtual-gamepad', 0).setInteractive();
+        this.button = this.scene.add.sprite(width - 100, height - 80, 'virtual-gamepad', 0).setInteractive();
         this.button.setScale(scale);
         this.button.setDepth(1000);
 
         this.button.on('pointerdown', () => {
             this.isDown = true;
-            this.button.setFrame(1); // frame presionado
+            this.button.setFrame(1);
         });
 
         this.button.on('pointerup', () => {

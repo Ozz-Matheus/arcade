@@ -28,7 +28,13 @@ export class VirtualGamepad {
             .setScale(scale)
             .setDepth(1000);
 
-        this.scene.input.on('pointerdown', this.onPointerDown, this);
+        this.scene.input.on('pointerdown', (pointer) => {
+            if (!this.joystickPointer && Phaser.Math.Distance.Between(pointer.x, pointer.y, this.center.x, this.center.y) <= this.radius * 2) {
+                this.joystickPointer = pointer;
+                this.properties.inUse = true;
+            }
+        }, this);
+
         this.scene.input.on('pointerup', this.onPointerUp, this);
         this.scene.input.on('pointermove', this.onPointerMove, this);
     }
@@ -55,7 +61,7 @@ export class VirtualGamepad {
     }
 
     onPointerMove(pointer) {
-        if (pointer === this.joystickPointer) {
+        if (this.joystickPointer && pointer.id === this.joystickPointer.id) {
             const deltaX = Phaser.Math.Clamp(pointer.x - this.center.x, -this.radius, this.radius);
 
             this.joystickPad.x = this.center.x + deltaX;
