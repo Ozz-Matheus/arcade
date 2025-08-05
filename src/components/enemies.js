@@ -1,5 +1,8 @@
 // src/components/enemies.js
 
+import { Settings } from '../settings.js';
+
+
 /* ------------------------------------------------------------------------------------------ */
 
 export class Enemies {
@@ -71,18 +74,32 @@ export class Enemies {
         JOURNEY: 60,
       };
 
-      // Movimiento descendente periódico
-      this.relatedScene.time.addEvent({
+      let frequency = 7000 - level * 500;
+      if (frequency < 2500) frequency = 2500;
+
+      let descentTargetY = this.relatedScene.sys.game.config.height - (100 - level * 10);
+      if (descentTargetY > this.relatedScene.sys.game.config.height - 10) {
+        descentTargetY = this.relatedScene.sys.game.config.height - 10;
+      }
+
+      const enemies = this.enemies.getChildren();
+      let descendingEnemies = enemies;
+
+      if (level === 1) {
+        descendingEnemies = enemies.slice(24);
+      }
+
+      //console.log(`Enemies descending on level ${level}: ${descendingEnemies.length}`);
+
+      this.relatedScene.tweens.add({
+        targets: descendingEnemies,
+        y: descentTargetY,
+        ease: 'Sine.easeInOut',
+        duration: 1000,
+        yoyo: true,
         delay: 5000,
-        loop: true,
-        callback: () => {
-          this.relatedScene.tweens.add({
-            targets: this.enemies.getChildren(),
-            y: "+=40",
-            duration: 500,
-            yoyo: true
-          });
-        }
+        repeat: -1,
+        repeatDelay: frequency
       });
 
     }
