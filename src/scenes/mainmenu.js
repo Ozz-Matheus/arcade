@@ -34,7 +34,7 @@ export class MainMenu extends Phaser.Scene {
 
         this.input.once('pointerdown', () => {
             SoundManager.playMusic(this, 'bg-music');
-            this.scene.start('game');
+            this.scene.start('prelevel');
         });
     }
 }

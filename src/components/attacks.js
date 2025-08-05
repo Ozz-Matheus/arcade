@@ -1,5 +1,9 @@
 // src/components/attacks.js
 
+
+import { Settings } from '../settings.js';
+
+
 /* ------------------------------------------------------------------------------------------ */
 
 export class Attacks {
@@ -37,10 +41,9 @@ export class Attacks {
 
 
         this.rhythm = {
-            attacks: 1000,
+            attacks: 1500 - Settings.getLevel() * 100,
             flag: 0
         };
-
 
     	//console.log(this.attacks);
 

@@ -58,6 +58,8 @@ export class Game extends Phaser.Scene {
 
         this.scoreboard.create();
 
+        this.registry.set('level', Settings.getLevel());
+
         this.bullet_sound = this.sound.add('bullet-sound');
         this.explosion_sound = this.sound.add('explosion-sound');
 
@@ -77,7 +79,7 @@ export class Game extends Phaser.Scene {
           this.player.get(),
           this.onPlayerHit,
           (attack, player) => {
-            return player.alpha === 1;
+            return player.alpha >= 1;
           },
           this
         );
@@ -199,6 +201,14 @@ export class Game extends Phaser.Scene {
                         find = true;
 
                         this.configureEnemyAttack(attack, enemy);
+
+                        this.tweens.add({
+                          targets: enemy,
+                          angle: 360,
+                          duration: 300,
+                          yoyo: true
+                        });
+
 
                         this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
 
