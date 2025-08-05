@@ -1,7 +1,9 @@
 // src/utils/translations.js
 
 export const Texts = {
-  start: "Toca para comenzar...",
+  start: "Bienvenid@s, Toca para iniciar...",
+  newGame: "Nueva Partida",
+  loading: "Preparado...",
   gameOver: "Has perdido",
   victory: "¡Has ganado!",
   newRecord: "¡Nuevo récord!",

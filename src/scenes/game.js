@@ -90,14 +90,6 @@ export class Game extends Phaser.Scene {
           this
         );
 
-        this.physics.add.overlap(
-          this.enemies.get(),
-          this.player.get(),
-          this.onPlayerHit,
-          (enemy, player) => player.alpha >= 1,
-          this
-        );
-
         this.virtualGamepad.createJoystick(100, 520, 1.2);
 
         this.fireButton.create();
@@ -251,13 +243,6 @@ export class Game extends Phaser.Scene {
 
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);
-
-      // Si el objeto que golpeó al jugador es un enemigo, también destruirlo
-      const type = attack.getData('type');
-      if (type === 'main' || type === 'secondary') {
-        attack.setActive(false).setVisible(false).disableBody(true, true);
-        this.particles.spawn(attack.x, attack.y);
-      }
 
       // Reducir vidas y actualizar HUD
       Settings.setLives(Settings.getLives() - 1);

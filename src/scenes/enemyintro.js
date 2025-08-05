@@ -1,30 +1,18 @@
 // src/scenes/enemyintro.js
 
-import { Stars } from '../components/stars.js';
-import { Enemies } from '../components/enemies.js';
-import { ScoreBoard } from '../components/scoreboard.js';
-import { Settings } from '../settings.js';
+import { Texts } from '../utils/translations.js';
 
 export class EnemyIntroScene extends Phaser.Scene {
   constructor() {
     super({ key: 'enemyintro' });
   }
 
-  init() {
-    this.stars = new Stars(this);
-    this.enemies = new Enemies(this);
-    this.scoreboard = new ScoreBoard(this);
-  }
-
   create() {
     const { width, height } = this.sys.game.config;
 
-    this.add.image(0, 0, 'background').setOrigin(0, 0);
-    this.stars.create();
-    this.enemies.create();
-    this.scoreboard.create();
+    this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0);
 
-    const message = this.add.text(width / 2, height / 1.4, 'Preparado...', {
+    const message = this.add.text(width / 2, height / 1.4, Texts.loading, {
       fontSize: '32px',
       fill: '#7f1',
       fontFamily: 'Verdana',
@@ -44,28 +32,9 @@ export class EnemyIntroScene extends Phaser.Scene {
       duration: 2000
     });
 
-    // Fade in de enemigos descendiendo
-    this.tweens.add({
-      targets: this.enemies.get().getChildren(),
-      alpha: 1,
-      delay: 1000,
-      duration: 3000
-    });
-
-    this.tweens.add({
-      targets: this.enemies.get().getChildren(),
-      y: `-=${height / 2}`,
-      ease: 'Sine.easeIn',
-      duration: 2400,
-      yoyo: true
-    });
-
     this.time.delayedCall(5000, () => {
       this.scene.start('game');
     });
-  }
 
-  update() {
-    this.stars.update();
   }
 }

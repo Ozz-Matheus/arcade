@@ -20,7 +20,7 @@ export class MainMenu extends Phaser.Scene {
             fontFamily: 'Verdana',
         }).setOrigin(0.5);
 
-        this.add.text(width / 2, height / 2 + 80, Texts.start, {
+        this.add.text(width / 2, height / 2 + 80, Texts.newGame, {
             fontSize: '30px',
             fill: '#ffffff',
             fontFamily: 'Verdana',
