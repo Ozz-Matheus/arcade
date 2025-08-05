@@ -58,6 +58,8 @@ export class Game extends Phaser.Scene {
 
         this.scoreboard.create();
 
+        this.scoreboard.updateLevel(Settings.getLevel());
+
         this.registry.set('level', Settings.getLevel());
 
         this.bullet_sound = this.sound.add('bullet-sound');
@@ -179,7 +181,7 @@ export class Game extends Phaser.Scene {
 
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
-            this.scene.start('victory');
+            this.scene.start('levelpassed');
           });
         }
     }

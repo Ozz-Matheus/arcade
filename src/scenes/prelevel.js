@@ -26,7 +26,7 @@ export class PreLevelScene extends Phaser.Scene {
     });
 
     this.time.delayedCall(4000, () => {
-      this.scene.start('game');
+      this.scene.start('enemyintro');
     });
   }
 }
