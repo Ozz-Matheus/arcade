@@ -56,7 +56,7 @@ export class Enemies {
 
         this.enemies.getChildren().forEach(enemy => {
           enemy.setScale(0.4).setAngle(350).setDepth(2);
-          enemy.setData('score', 100 + Phaser.Math.Between(0, 9) * 10);
+          enemy.setData('score', enemy.getData('type') === 'main' ? 100 : 250);
 
           if (enemy.getData('type') === 'main') {
             enemy.play('main-enemies-animation');
