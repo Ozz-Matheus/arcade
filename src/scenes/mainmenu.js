@@ -1,16 +1,10 @@
 // src/scenes/mainmenu.js
 
-import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
-import { loader } from './loader.js';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
         super({ key: 'mainmenu' });
-    }
-
-    preload() {
-        loader(this);
     }
 
     create() {
@@ -33,7 +27,6 @@ export class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
-            SoundManager.playMusic(this, 'bg-music');
             this.scene.start('prelevel');
         });
     }

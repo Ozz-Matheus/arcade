@@ -7,12 +7,14 @@ import { VictoryScreen } from './scenes/victory.js';
 import { PreLevelScene } from './scenes/prelevel.js';
 import { EnemyIntroScene } from './scenes/enemyintro.js';
 import { LevelPassedScene } from './scenes/levelpassed.js';
+import { StartScene } from './scenes/start.js';
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
   scene: [
+    StartScene,
     MainMenu,
     PreLevelScene,
     EnemyIntroScene,
