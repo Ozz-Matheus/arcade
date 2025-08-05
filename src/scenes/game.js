@@ -51,7 +51,6 @@ export class Game extends Phaser.Scene {
     create(){
 
         Settings.setPoints(0);
-        Settings.setLevel(1);
         Settings.setLives(3);
 
         this.livesDisplay.create();
