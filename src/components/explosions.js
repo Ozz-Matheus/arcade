@@ -44,5 +44,23 @@ export class Explosions{
         return this.explosions;
     }
 
+    spawn(x, y, sound) {
+        let explosion = this.explosions.getChildren().find(e => !e.active && !e.visible);
+
+        if (explosion) {
+            explosion.setActive(true).setVisible(true);
+            explosion.setX(x);
+            explosion.setY(y);
+            explosion.setScale(2);
+
+            if (sound) sound.play();
+
+            setTimeout(() => {
+                explosion.setActive(false).setVisible(false);
+            }, Explosions.DURATION_OF_THE_EXPLOSION);
+        }
+    }
+
+
 
 }

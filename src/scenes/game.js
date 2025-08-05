@@ -83,10 +83,16 @@ export class Game extends Phaser.Scene {
         this.physics.add.overlap(
           this.attacks.get(),
           this.player.get(),
-          this.onPlayerHit,
-          (attack, player) => {
-            return player.alpha >= 1;
-          },
+          this.onAttackHitPlayer,
+          (attack, player) => player.alpha >= 1,
+          this
+        );
+
+        this.physics.add.overlap(
+          this.enemies.get(),
+          this.player.get(),
+          this.onEnemyHitPlayer,
+          (enemy, player) => player.alpha >= 1,
           this
         );
 
@@ -236,53 +242,54 @@ export class Game extends Phaser.Scene {
         attack.setScale(0.8);
     }
 
-
-    onPlayerHit(attack, player) {
-
-      //console.log("¡Jugador golpeado!");
-
+    onAttackHitPlayer(attack, player) {
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);
+      this.damagePlayer(player);
+    }
 
-      // Reducir vidas y actualizar HUD
+    onEnemyHitPlayer(enemy, player) {
+
+      const type = enemy.getData('type');
+      const score = enemy.getData('score') ?? 250;
+
+      console.log('[COLISIÓN] Enemigo tipo:', type);
+      console.log('[COLISIÓN] Enemigo puntaje:', score);
+
+      Settings.setPoints(Settings.getPoints() + score);
+      this.scoreboard.updatePoints(Settings.getPoints());
+
+      this.particles.spawn(enemy.x, enemy.y);
+      this.explosions.spawn(enemy.x, enemy.y, this.explosion_sound);
+
+      enemy.setActive(false).setVisible(false).disableBody(true, true);
+
+      this.damagePlayer(player);
+    }
+
+    damagePlayer(player) {
+
+     // Reducir vidas y actualizar HUD
       Settings.setLives(Settings.getLives() - 1);
       this.livesDisplay.removeOneLife();
 
       // Ocultar jugador
-      this.player.get().setActive(false).setVisible(false).disableBody(true, true);
+      player.setActive(false).setVisible(false).disableBody(true, true);
 
-      let find = false;
-
-      this.explosions.get().getChildren().forEach(explosion => {
-      if (!explosion.active && !explosion.visible && !find) {
-        find = true;
-        explosion.setActive(true).setVisible(true);
-        explosion.setX(player.x);
-        explosion.setY(player.y);
-        explosion.setScale(2);
-        this.explosion_sound.play();
-
-        setTimeout(() => {
-          explosion.setActive(false).setVisible(false);
-        }, Explosions.DURATION_OF_THE_EXPLOSION);
-      }
-      });
-
-      // Efecto visual
+     // Efecto visual
       this.particles.spawn(player.x, player.y);
+      this.explosions.spawn(player.x, player.y, this.explosion_sound);
 
       // Verificar si ya no tiene vidas
       if (Settings.getLives() <= 0) {
-        this.time.delayedCall(1000, () => {
-          this.scene.start('gameover');
-        });
+        this.time.delayedCall(1000, () => this.scene.start('gameover'));
         return;
       }
 
       // Revivir jugador tras pausa e invulnerabilidad
       this.time.delayedCall(1500, () => {
-        const [x, y] = this.player.get().getData('posIni');
         const player = this.player.get();
+        const [x, y] = player.getData('posIni');
 
         player.setActive(true).setVisible(true).setAlpha(0.1);
         player.enableBody(true, x, y, true, true);
