@@ -29,6 +29,11 @@ scene.load.spritesheet('virtual-gamepad', './src/images/gamepad_spritesheet.png'
   frameHeight: 100
 });
 
+scene.load.spritesheet('fullscreen-button', './src/images/fullscreen-button.png', {
+  frameWidth: 64,
+  frameHeight: 64
+});
+
 
 /* ------------------------------------------------------------------------------------------ */
 

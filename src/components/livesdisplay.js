@@ -33,10 +33,11 @@ export class LivesDisplay {
 
   removeOneLife() {
     const remainingLives = this.livesGroup.getChildren();
-    if (remainingLives.length > 0) {
-      const last = remainingLives[remainingLives.length - 1];
-      last.setVisible(false);
-    }
+    const currentLives = Settings.getLives();
+
+    remainingLives.forEach((life, index) => {
+      life.setVisible(index < currentLives);
+    });
   }
 
   reset() {

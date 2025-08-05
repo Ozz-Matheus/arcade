@@ -14,6 +14,7 @@ import { ScoreBoard } from '../components/scoreboard.js';
 import { LivesDisplay } from '../components/livesdisplay.js';
 import { FireButton } from '../components/firebutton.js';
 import { VirtualGamepad } from '../components/virtualgamepad.js';
+import { FullscreenButton } from '../components/fullscreenbutton.js';
 
 
 /* ------------------------------------------------------------------------------------------ */
@@ -42,6 +43,8 @@ export class Game extends Phaser.Scene {
 
         this.fireButton = new FireButton(this);
 
+        this.fullscreen = new FullscreenButton(this);
+
     }
 
     preload() {
@@ -52,6 +55,8 @@ export class Game extends Phaser.Scene {
 
         Settings.setPoints(0);
         Settings.setLives(3);
+
+        this.fullscreen.create();
 
         this.livesDisplay.create();
 
