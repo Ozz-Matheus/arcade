@@ -15,7 +15,7 @@ import { LivesDisplay } from '../components/livesdisplay.js';
 import { FireButton } from '../components/firebutton.js';
 import { VirtualGamepad } from '../components/virtualgamepad.js';
 import { FullscreenButton } from '../components/fullscreenbutton.js';
-
+import { PowerUps } from '../components/powerups.js';
 
 /* ------------------------------------------------------------------------------------------ */
 
@@ -44,6 +44,8 @@ export class Game extends Phaser.Scene {
         this.fireButton = new FireButton(this);
 
         this.fullscreen = new FullscreenButton(this);
+
+        this.powerups = new PowerUps(this);
 
     }
 
@@ -98,6 +100,13 @@ export class Game extends Phaser.Scene {
         this.virtualGamepad.createJoystick(100, 520, 1.2);
 
         this.fireButton.create();
+
+        this.powerups.create();
+
+        this.physics.add.overlap(this.powerups.get(), this.player.get(), this.handlePowerUpPickup, null, this);
+
+        this.hasMultiShot = false;
+
 
     }
 
@@ -188,6 +197,10 @@ export class Game extends Phaser.Scene {
 
         this.particles.spawn(enemies.x, enemies.y);
 
+        if (Phaser.Math.Between(0, 100) < 15) {  // 15% chance
+          this.powerups.spawn(enemies.x, enemies.y);
+        }
+
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
             if (Settings.isLastLevel()) {
@@ -247,7 +260,7 @@ export class Game extends Phaser.Scene {
         const speed = this.attacks.getAttackSpeedByLevel(level);
         attack.setVelocityY(speed);
 
-        console.log(speed);
+        //console.log(speed);
     }
 
     onAttackHitPlayer(attack, player) {
@@ -282,6 +295,11 @@ export class Game extends Phaser.Scene {
       Settings.setLives(Settings.getLives() - 1);
       this.livesDisplay.removeOneLife();
 
+      // Quitar el Power UP
+      this.hasMultiShot = false;
+      this.bullets.rhythm.bullets = 200;
+      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 2;
+
       // Ocultar jugador
       player.setActive(false).setVisible(false).disableBody(true, true);
 
@@ -312,6 +330,13 @@ export class Game extends Phaser.Scene {
       });
     }
 
+    handlePowerUpPickup(powerup, player) {
+      powerup.disableBody(true, true);
+      this.hasMultiShot = true;
 
+      // Cambia a 4 disparos simultáneos
+      this.bullets.rhythm.bullets = 200;
+      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 4;
+    }
 
 }

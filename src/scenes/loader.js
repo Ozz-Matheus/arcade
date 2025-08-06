@@ -22,6 +22,7 @@ scene.load.spritesheet('secondary-enemies', './src/images/secondary-enemies.png'
 scene.load.spritesheet('explosion', './src/images/explosion.png', {frameWidth: 32, frameHeight: 32});
 scene.load.spritesheet('flames', './src/images/flames.png', {frameWidth: 18, frameHeight: 39});
 scene.load.image('particle', './src/images/particle.png');
+scene.load.image('powerup-icon', './src/images/powerup-icon.png');
 
 
 scene.load.spritesheet('virtual-gamepad', './src/images/gamepad_spritesheet.png', {

@@ -71,7 +71,7 @@ export class Attacks {
     }
 
     getAttackSpeedByLevel(level) {
-      const baseSpeed = 500;
+      const baseSpeed = 200;
       const extraSpeed = (level - 1) * 100;
       return baseSpeed + extraSpeed;
     }
