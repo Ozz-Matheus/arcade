@@ -14,8 +14,15 @@ export class PreLevelScene extends Phaser.Scene {
     const levelText = this.add.text(width / 2, height / 2, Texts.level(Settings.getLevel()), {
       fontSize: '60px',
       fontStyle: 'bold',
-      fill: '#ffff00',
+      fill: '#00b83f',
       fontFamily: 'Verdana',
+      shadow: {
+        offsetX: 1,
+        offsetY: 1,
+        color: '#006a00',
+        blur: 8,
+        fill: true
+      }
     }).setOrigin(0.5).setAlpha(0);
 
     this.tweens.add({

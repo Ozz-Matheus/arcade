@@ -78,7 +78,7 @@ export class Bullets {
         bullet.play('bullet-animation');
       });
 
-      console.log(`[Recreate] MAX BULLETS: ${Bullets.MAXIMUM_NUMBER_OF_BULLETS}`);
+      //console.log(`[Recreate] MAX BULLETS: ${Bullets.MAXIMUM_NUMBER_OF_BULLETS}`);
     }
 
     get() {

@@ -6,8 +6,8 @@ export class LivesDisplay {
 
   static ICON_WIDTH = 28;
   static ICON_HEIGHT = 28;
-  static ICON_SPACING = 4;
-  static ICON_SCALE = 0.10;
+  static ICON_SPACING = 8;
+  static ICON_SCALE = 0.20;
 
   constructor(scene) {
     this.relatedScene = scene;
@@ -17,7 +17,7 @@ export class LivesDisplay {
     this.livesGroup = this.relatedScene.add.group();
 
     const startX = 20;
-    const y = 45;
+    const y = 36;
 
     for (let i = 0; i < Settings.getLives(); i++) {
       const x = startX + i * (LivesDisplay.ICON_WIDTH + LivesDisplay.ICON_SPACING);

@@ -340,7 +340,7 @@ export class Game extends Phaser.Scene {
     powerup.setVisible(false);
     powerup.body.enable = false;
 
-    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 3;
+    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 4;
     this.bullets.recreate();
     this.registerBulletCollision();
     this.bullets.rhythm.bullets = 400;

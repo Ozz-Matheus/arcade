@@ -21,13 +21,13 @@ export class StartScene extends Phaser.Scene {
 
     this.add.text(width / 2, height / 2, Texts.start, {
       fontSize: '40px',
-      fill: '#ffffaa',
+      fill: '#ffffff',
       fontFamily: 'Verdana',
       shadow: {
         offsetX: 1,
         offsetY: 1,
-        color: '#ffffff',
-        blur: 7,
+        color: '#b7b7b7',
+        blur: 4,
         fill: true
       }
     }).setOrigin(0.5);

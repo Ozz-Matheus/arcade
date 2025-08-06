@@ -14,13 +14,13 @@ export class EnemyIntroScene extends Phaser.Scene {
 
     const message = this.add.text(width / 2, height / 1.4, Texts.loading, {
       fontSize: '32px',
-      fill: '#7f1',
+      fill: '#25d366',
       fontFamily: 'Verdana',
       shadow: {
         offsetX: 1,
         offsetY: 1,
-        color: '#2f9',
-        blur: 9,
+        color: '#006a00',
+        blur: 6,
         fill: true
       }
     }).setOrigin(0.5).setAlpha(0);

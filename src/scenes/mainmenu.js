@@ -17,14 +17,29 @@ export class MainMenu extends Phaser.Scene {
         this.add.text(width / 2, height / 2, "Phoenix", {
             fontSize: '70px',
             fontStyle: 'bold',
-            fill: '#ffaa00',
+            fill: '#00b83f',
             fontFamily: 'Verdana',
+            shadow: {
+              offsetX: 1,
+              offsetY: 1,
+              color: '#006a00',
+              blur: 6,
+              fill: true
+            }
+
         }).setOrigin(0.5);
 
         this.add.text(width / 2, height / 2 + 80, Texts.newGame, {
             fontSize: '30px',
             fill: '#ffffff',
             fontFamily: 'Verdana',
+            shadow: {
+              offsetX: 1,
+              offsetY: 1,
+              color: '#b7b7b7',
+              blur: 4,
+              fill: true
+            }
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {

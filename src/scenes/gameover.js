@@ -19,15 +19,29 @@ export class GameOver extends Phaser.Scene {
         this.add.text(width / 2, height / 2, Texts.gameOver, {
             fontSize: '64px',
             fontStyle: 'bold',
-            fill: '#ff5555',
+            fill: '#fd2727',
             fontFamily: 'Verdana',
+            shadow: {
+              offsetX: 1,
+              offsetY: 1,
+              color: '#F44336',
+              blur: 4,
+              fill: true
+            }
         }).setOrigin(0.5);
 
         if (Settings.getPoints() >= Settings.getRecord() * 0.9) {
-          this.add.text(width / 2, height / 2 - 100, Texts.almostRecord, {
+          this.add.text(width / 2, height / 2 - 60, Texts.almostRecord, {
             fontSize: '24px',
-            fill: '#ffff00',
+            fill: '#00b83f',
             fontFamily: 'Verdana',
+            shadow: {
+              offsetX: 1,
+              offsetY: 1,
+              color: '#006a00',
+              blur: 6,
+              fill: true
+            }
           }).setOrigin(0.5);
         }
 

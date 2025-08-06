@@ -22,13 +22,13 @@ export class LevelPassedScene extends Phaser.Scene {
     const title = this.add.text(width / 2, height / 3, Texts.levelPassed, {
       fontSize: '60px',
       fontStyle: 'bold',
-      fill: '#ffff66',
+      fill: '#00b83f',
       fontFamily: 'Verdana',
       shadow: {
         offsetX: 1,
         offsetY: 1,
-        color: '#fa1',
-        blur: 15,
+        color: '#006a00',
+        blur: 6,
         fill: true
       }
     }).setOrigin(0.5).setAlpha(0);
