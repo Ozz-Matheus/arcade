@@ -23,11 +23,10 @@ export class GameOver extends Phaser.Scene {
             fontFamily: 'Verdana',
         }).setOrigin(0.5);
 
-        if (Settings.getPoints() >= Settings.getRecord()) {
-          Settings.setRecord(Settings.getPoints());
-          this.add.text(width / 2, height / 2 - 100, Texts.newRecord, {
-            fontSize: '32px',
-            fill: '#ff0',
+        if (Settings.getPoints() >= Settings.getRecord() * 0.9) {
+          this.add.text(width / 2, height / 2 - 100, Texts.almostRecord, {
+            fontSize: '24px',
+            fill: '#ffff00',
             fontFamily: 'Verdana',
           }).setOrigin(0.5);
         }

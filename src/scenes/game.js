@@ -200,7 +200,7 @@ export class Game extends Phaser.Scene {
 
         this.particles.spawn(enemies.x, enemies.y);
 
-        if (Phaser.Math.Between(0, 100) < 3) {  // 3% chance
+        if (Phaser.Math.Between(0, 100) < 2) {  // 2% chance
           this.powerups.spawn(enemies.x, enemies.y);
         }
 

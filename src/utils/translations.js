@@ -7,6 +7,7 @@ export const Texts = {
   gameOver: "Has perdido",
   victory: "¡Has ganado!",
   newRecord: "¡Nuevo récord!",
+  almostRecord: "¡Estuviste cerca del récord!",
   levelPassed: "Nivel superado",
   level: (n) => `Nivel ${n}`,
   score: (n) => `Puntos: ${n}`,

@@ -5,7 +5,7 @@ export class Settings {
   static level = 1;
   static lives = 3;
   static record = 20000;
-  static max_level = 2;
+  static max_level = 3;
 
 
   static getPoints() {
