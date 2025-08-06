@@ -3,6 +3,7 @@
 import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
+import { Settings } from '../settings.js';
 
 export class StartScene extends Phaser.Scene {
   constructor() {
@@ -32,6 +33,7 @@ export class StartScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.input.once('pointerdown', () => {
+      Settings.resetGameState();
       SoundManager.playMusic(this, 'bg-music');
       this.scene.start('mainmenu');
     });

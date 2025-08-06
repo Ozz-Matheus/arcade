@@ -53,7 +53,6 @@ export class Game extends Phaser.Scene {
 
     create(){
 
-        Settings.setPoints(0);
         Settings.setLives(3);
 
         this.fullscreen.create();

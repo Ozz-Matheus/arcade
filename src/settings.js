@@ -44,4 +44,11 @@ export class Settings {
 
     return Settings.getLevel() >= Settings.max_level;
   }
+
+  static resetGameState() {
+    Settings.points = 0;
+    Settings.lives = 3;
+    Settings.level = 1;
+  }
+
 }

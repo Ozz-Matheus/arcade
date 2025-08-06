@@ -1,6 +1,7 @@
 // src/scenes/mainmenu.js
 
 import { Texts } from '../utils/translations.js';
+import { Settings } from '../settings.js';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
@@ -27,6 +28,7 @@ export class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
+            Settings.resetGameState();
             this.scene.start('prelevel');
         });
     }
