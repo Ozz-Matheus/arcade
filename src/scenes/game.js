@@ -140,18 +140,22 @@ export class Game extends Phaser.Scene {
         if (this.player.controls.space.isDown || this.fireButton?.isDown) {
             if (this.time.now > this.bullets.rhythm.flag) {
                 //console.log('bullet');
-                let find = false;
+
+                let bulletsFired = 0;
+                const maxBullets = Bullets.MAXIMUM_NUMBER_OF_BULLETS;
 
                 this.bullets.get().getChildren().forEach(bullet => {
-                    if (!bullet.active && !bullet.visible && !find) {
-                        find = true;
-                        bullet.setActive(true).setVisible(true).enableBody(true, true);
-                        bullet.setX(this.player.get().x);
-                        bullet.setY(this.player.get().y - Math.floor(this.player.get().body.height / 2));
-                        bullet.setVelocityY(Bullets.SPEED_ON_THE_Y_AXIS);
-                        bullet.setAlpha(0.9);
-                        this.bullet_sound.play();
-                    }
+                  if (!bullet.active && !bullet.visible && bulletsFired < maxBullets) {
+                    bulletsFired++;
+
+                    const offset = 15 * (bulletsFired - Math.ceil(maxBullets / 2)); // para espaciar
+                    bullet.setActive(true).setVisible(true).enableBody(true, true);
+                    bullet.setX(this.player.get().x + offset);
+                    bullet.setY(this.player.get().y - Math.floor(this.player.get().body.height / 2));
+                    bullet.setVelocityY(Bullets.SPEED_ON_THE_Y_AXIS);
+                    bullet.setAlpha(0.9);
+                    this.bullet_sound.play();
+                  }
                 });
 
                 this.bullets.rhythm.flag = this.time.now + this.bullets.rhythm.bullets;
@@ -196,7 +200,7 @@ export class Game extends Phaser.Scene {
 
         this.particles.spawn(enemies.x, enemies.y);
 
-        if (Phaser.Math.Between(0, 100) < 15) {  // 15% chance
+        if (Phaser.Math.Between(0, 100) < 3) {  // 3% chance
           this.powerups.spawn(enemies.x, enemies.y);
         }
 
@@ -336,7 +340,7 @@ export class Game extends Phaser.Scene {
     powerup.setVisible(false);
     powerup.body.enable = false;
 
-    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 8;
+    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 3;
     this.bullets.recreate();
     this.registerBulletCollision();
     this.bullets.rhythm.bullets = 400;
