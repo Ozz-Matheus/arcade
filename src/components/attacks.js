@@ -8,8 +8,7 @@ import { Settings } from '../settings.js';
 
 export class Attacks {
 
-	static MAXIMUM_NUMBER_OF_ATTACKS = 9;
-	static SPEED_ON_THE_Y_AXIS = 100;
+	static MAXIMUM_NUMBER_OF_ATTACKS = 10;
 
     constructor(scene) {
         this.relatedScene = scene;
@@ -23,6 +22,20 @@ export class Attacks {
             setXY: { x: -9999, y: 9999, stepX: 150 },
             repeat: Attacks.MAXIMUM_NUMBER_OF_ATTACKS
         });
+
+
+        const level = this.relatedScene.registry.get('level') || 1;
+
+        // Disminuye el tiempo entre disparos a mayor nivel
+        let fireRate = 2500 - level * 300;
+        if (fireRate < 800) fireRate = 800;
+
+        // Guardamos el ritmo en el objeto
+        this.rhythm = {
+          attacks: fireRate,
+          flag: 0
+        };
+
 
         this.relatedScene.anims.create({
             key: 'attack-animation',
@@ -38,12 +51,6 @@ export class Attacks {
             attack.play('attack-animation');
             //console.log(attack.body.width, attack.body.height);
         });
-
-
-        this.rhythm = {
-            attacks: 1500 - Settings.getLevel() * 100,
-            flag: 0
-        };
 
     	//console.log(this.attacks);
 
@@ -63,4 +70,9 @@ export class Attacks {
         return this.attacks;
     }
 
+    getAttackSpeedByLevel(level) {
+      const baseSpeed = 500;
+      const extraSpeed = (level - 1) * 100;
+      return baseSpeed + extraSpeed;
+    }
 }

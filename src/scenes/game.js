@@ -241,8 +241,13 @@ export class Game extends Phaser.Scene {
 
         attack.setActive(true).setVisible(true);
         attack.enableBody(true, enemy.x, enemy.y,true, true);
-        attack.setVelocityY( Attacks.SPEED_ON_THE_Y_AXIS );
         attack.setScale(0.8);
+
+        const level = this.registry.get('level') || 1;
+        const speed = this.attacks.getAttackSpeedByLevel(level);
+        attack.setVelocityY(speed);
+
+        console.log(speed);
     }
 
     onAttackHitPlayer(attack, player) {
