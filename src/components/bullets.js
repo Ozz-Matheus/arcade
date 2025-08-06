@@ -4,7 +4,7 @@
 
 export class Bullets {
 
-	static MAXIMUM_NUMBER_OF_BULLETS = 2;
+	static MAXIMUM_NUMBER_OF_BULLETS = 1;
 	static SPEED_ON_THE_Y_AXIS = -500;
 
     constructor(scene) {
@@ -54,6 +54,31 @@ export class Bullets {
                 bullet.setActive(false).setVisible(false).setX(-9999);
             }
         });
+    }
+
+    recreate() {
+      this.bullets.clear(true, true); // elimina las balas existentes
+
+      this.bullets = this.relatedScene.physics.add.group({
+        key: 'lasers',
+        setXY: { x: -9999, y: 9999, stepX: 150 },
+        repeat: Bullets.MAXIMUM_NUMBER_OF_BULLETS
+      });
+
+      this.relatedScene.anims.create({
+        key: 'bullet-animation',
+        frames: this.relatedScene.anims.generateFrameNumbers('lasers', { frames: [0, 1] }),
+        frameRate: 15,
+        repeat: -1
+      });
+
+      this.bullets.getChildren().forEach(bullet => {
+        bullet.setScale(0.5, 1);
+        bullet.setActive(false).setVisible(false).disableBody(true, true);
+        bullet.play('bullet-animation');
+      });
+
+      console.log(`[Recreate] MAX BULLETS: ${Bullets.MAXIMUM_NUMBER_OF_BULLETS}`);
     }
 
     get() {

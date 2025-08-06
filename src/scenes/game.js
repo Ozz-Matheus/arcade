@@ -105,7 +105,6 @@ export class Game extends Phaser.Scene {
 
         this.physics.add.overlap(this.powerups.get(), this.player.get(), this.handlePowerUpPickup, null, this);
 
-        this.hasMultiShot = false;
 
 
     }
@@ -296,9 +295,10 @@ export class Game extends Phaser.Scene {
       this.livesDisplay.removeOneLife();
 
       // Quitar el Power UP
-      this.hasMultiShot = false;
+      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 1;
+      this.bullets.recreate();
+      this.registerBulletCollision();
       this.bullets.rhythm.bullets = 200;
-      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 2;
 
       // Ocultar jugador
       player.setActive(false).setVisible(false).disableBody(true, true);
@@ -330,13 +330,27 @@ export class Game extends Phaser.Scene {
       });
     }
 
-    handlePowerUpPickup(powerup, player) {
-      powerup.disableBody(true, true);
-      this.hasMultiShot = true;
+  handlePowerUpPickup(player, powerup) {
 
-      // Cambia a 4 disparos simultáneos
-      this.bullets.rhythm.bullets = 200;
-      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 4;
-    }
+    powerup.setActive(false);
+    powerup.setVisible(false);
+    powerup.body.enable = false;
+
+    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 8;
+    this.bullets.recreate();
+    this.registerBulletCollision();
+    this.bullets.rhythm.bullets = 400;
+  }
+
+  registerBulletCollision() {
+
+    this.physics.add.overlap(
+      this.enemies.get(),
+      this.bullets.get(),
+      this.handleBulletHitsEnemy,
+      null,
+      this
+    );
+  }
 
 }
