@@ -191,7 +191,11 @@ export class Game extends Phaser.Scene {
 
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
-            this.scene.start('levelpassed');
+            if (Settings.isLastLevel()) {
+              this.scene.start('victory');
+            } else {
+              this.scene.start('levelpassed');
+            }
           });
         }
     }

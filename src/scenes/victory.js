@@ -10,8 +10,6 @@ export class VictoryScreen extends Phaser.Scene {
 
     create() {
 
-        this.scoreboard.updateLevel(Settings.getLevel());
-
         const { width, height } = this.sys.game.config;
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);

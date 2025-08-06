@@ -5,6 +5,8 @@ export class Settings {
   static level = 1;
   static lives = 3;
   static record = 20000;
+  static max_level = 2;
+
 
   static getPoints() {
     return Settings.points;
@@ -36,5 +38,10 @@ export class Settings {
 
   static setRecord(value) {
     Settings.record = value;
+  }
+
+  static isLastLevel() {
+
+    return Settings.getLevel() >= Settings.max_level;
   }
 }

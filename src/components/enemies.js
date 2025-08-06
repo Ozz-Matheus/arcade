@@ -101,9 +101,9 @@ export class Enemies {
       });
 
         // DEBUG: Verificar tipo y score de cada enemigo
-        this.enemies.getChildren().forEach(enemy => {
-          console.log(`[DEBUG] Enemy creado: tipo=${enemy.getData('type')} | score=${enemy.getData('score')}`);
-        });
+        // this.enemies.getChildren().forEach(enemy => {
+        //   console.log(`[DEBUG] Enemy creado: tipo=${enemy.getData('type')} | score=${enemy.getData('score')}`);
+        // });
 
 
     }
