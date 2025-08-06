@@ -248,13 +248,13 @@ export class Game extends Phaser.Scene {
       this.damagePlayer(player);
     }
 
-    onEnemyHitPlayer(enemy, player) {
+    onEnemyHitPlayer(player, enemy) {
 
       const type = enemy.getData('type');
-      const score = enemy.getData('score') ?? 250;
+      const score = enemy.getData('score') ?? 100;
 
-      console.log('[COLISIÓN] Enemigo tipo:', type);
-      console.log('[COLISIÓN] Enemigo puntaje:', score);
+      //console.log('[COLISIÓN] Enemigo tipo:', type);
+      //console.log('[COLISIÓN] Enemigo puntaje:', score);
 
       Settings.setPoints(Settings.getPoints() + score);
       this.scoreboard.updatePoints(Settings.getPoints());
@@ -265,6 +265,7 @@ export class Game extends Phaser.Scene {
       enemy.setActive(false).setVisible(false).disableBody(true, true);
 
       this.damagePlayer(player);
+
     }
 
     damagePlayer(player) {

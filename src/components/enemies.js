@@ -22,16 +22,14 @@ export class Enemies {
 
         // Crear main-enemies
         for (let i = 0; i < mainCount; i++) {
-          const enemy = this.relatedScene.physics.add.sprite(0, 0, 'main-enemies');
+          const enemy = this.enemies.create(0, 0, 'main-enemies');
           enemy.setData('type', 'main');
-          this.enemies.add(enemy);
         }
 
         // Crear secondary-enemies
         for (let i = 0; i < secondaryCount; i++) {
-          const enemy = this.relatedScene.physics.add.sprite(0, 0, 'secondary-enemies');
+          const enemy = this.enemies.create(0, 0, 'secondary-enemies');
           enemy.setData('type', 'secondary');
-          this.enemies.add(enemy);
         }
 
         Phaser.Actions.GridAlign(this.enemies.getChildren(), {
