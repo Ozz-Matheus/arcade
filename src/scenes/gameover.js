@@ -3,6 +3,7 @@
 import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
+import { getUIScale } from '../utils/scaling.js';
 
 export class GameOver extends Phaser.Scene {
     constructor() {
@@ -12,12 +13,14 @@ export class GameOver extends Phaser.Scene {
     create() {
         const { width, height } = this.sys.game.config;
 
+        const scale = getUIScale(this);
+
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
         SoundManager.playMusic(this, 'gameover-music', { loop: false, volume: 0.6 });
 
         this.add.text(width / 2, height / 2, Texts.gameOver, {
-            fontSize: '64px',
+            fontSize: `${Math.floor(64 * scale)}px`,
             fontStyle: 'bold',
             fill: '#fd2727',
             fontFamily: 'Verdana',
@@ -32,7 +35,7 @@ export class GameOver extends Phaser.Scene {
 
         if (Settings.getPoints() >= Settings.getRecord() * 0.9) {
           this.add.text(width / 2, height / 2 - 60, Texts.almostRecord, {
-            fontSize: '24px',
+            fontSize: `${Math.floor(24 * scale)}px`,
             fill: '#00b83f',
             fontFamily: 'Verdana',
             shadow: {

@@ -4,6 +4,7 @@ import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
 import { Settings } from '../settings.js';
+import { getUIScale } from '../utils/scaling.js';
 
 export class StartScene extends Phaser.Scene {
   constructor() {
@@ -15,12 +16,19 @@ export class StartScene extends Phaser.Scene {
 	}
 
   create() {
+
+    console.log('config:', this.sys.game.config.width);
+    console.log('displaySize:', this.scale.displaySize.width);
+    console.log('parentSize:', this.scale.parentSize.width);
+
+    const scale = getUIScale(this);
+
     const { width, height } = this.sys.game.config;
 
     this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0); // fondo negro
 
     this.add.text(width / 2, height / 2, Texts.start, {
-      fontSize: '40px',
+      fontSize: `${Math.floor(40 * scale)}px`,
       fill: '#ffffff',
       fontFamily: 'Verdana',
       shadow: {

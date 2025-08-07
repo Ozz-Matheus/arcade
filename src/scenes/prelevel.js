@@ -2,6 +2,7 @@
 
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
+import { getUIScale } from '../utils/scaling.js';
 
 export class PreLevelScene extends Phaser.Scene {
   constructor() {
@@ -11,8 +12,10 @@ export class PreLevelScene extends Phaser.Scene {
   create() {
     const { width, height } = this.sys.game.config;
 
+    const scale = getUIScale(this);
+
     const levelText = this.add.text(width / 2, height / 2, Texts.level(Settings.getLevel()), {
-      fontSize: '60px',
+      fontSize: `${Math.floor(60 * scale)}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',

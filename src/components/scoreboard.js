@@ -2,6 +2,7 @@
 
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
+import { getUIScale } from '../utils/scaling.js';
 
 export class ScoreBoard {
     constructor(scene) {
@@ -9,11 +10,14 @@ export class ScoreBoard {
     }
 
     create() {
+
         const { width } = this.relatedScene.sys.game.config;
+
+        const scale = getUIScale(this);
 
         this.labels = {
             points: this.relatedScene.add.text(20, 10, Texts.score(Settings.getPoints()), {
-                fontSize: '20px',
+                fontSize: `${Math.floor(20 * scale)}px`,
                 fill: '#fff',
                 fontFamily: 'Verdana',
                 shadow: {
@@ -27,7 +31,7 @@ export class ScoreBoard {
             }).setDepth(1000),
 
             level: this.relatedScene.add.text(width / 2, 10, Texts.level(Settings.getLevel()), {
-              fontSize: '20px',
+              fontSize: `${Math.floor(20 * scale)}px`,
               fill: '#fff',
               fontFamily: 'Verdana',
               shadow: {
@@ -40,7 +44,7 @@ export class ScoreBoard {
             }).setOrigin(0.5, 0).setDepth(1000),
 
             record: this.relatedScene.add.text(width - 60, 10, Texts.record(Settings.getRecord()), {
-                fontSize: '20px',
+                fontSize: `${Math.floor(20 * scale)}px`,
                 fill: '#fff',
                 fontFamily: 'Verdana',
                 shadow: {

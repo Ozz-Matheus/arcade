@@ -5,6 +5,7 @@ import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
 import { Settings } from '../settings.js';
 import { Stars } from '../components/stars.js';
+import { getUIScale } from '../utils/scaling.js';
 
 export class LevelPassedScene extends Phaser.Scene {
   constructor() {
@@ -18,6 +19,8 @@ export class LevelPassedScene extends Phaser.Scene {
   create() {
     const { width, height } = this.sys.game.config;
 
+    const scale = getUIScale(this);
+
     this.add.image(0, 0, 'background').setOrigin(0, 0);
 
     SoundManager.playMusic(this, 'level-passed', { loop: false, volume: 0.6 });
@@ -25,7 +28,7 @@ export class LevelPassedScene extends Phaser.Scene {
     this.stars.create();
 
     const title = this.add.text(width / 2, height / 3, Texts.levelPassed, {
-      fontSize: '60px',
+      fontSize: `${Math.floor(60 * scale)}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',
