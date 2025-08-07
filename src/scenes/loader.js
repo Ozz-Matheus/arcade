@@ -45,7 +45,8 @@ scene.load.spritesheet('fullscreen-button', './src/images/fullscreen-button.png'
 scene.load.audio('bg-music', './src/audio/bg-music.ogg');
 scene.load.audio('bullet-sound', './src/audio/bullet.mp3');
 scene.load.audio('explosion-sound', './src/audio/explosion.wav');
+scene.load.audio('die-throw', './src/audio/die-throw.ogg');
 scene.load.audio('victory-music', './src/audio/victory-music.mp3');
 scene.load.audio('gameover-music', './src/audio/gameover-music.ogg');
-
+scene.load.audio('level-passed', './src/audio/level-passed.mp3');
 }

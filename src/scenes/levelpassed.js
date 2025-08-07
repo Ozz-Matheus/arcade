@@ -1,7 +1,9 @@
 // src/scenes/levelpassed.js
 
-import { Settings } from '../settings.js';
+import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
+import { loader } from './loader.js';
+import { Settings } from '../settings.js';
 import { Stars } from '../components/stars.js';
 
 export class LevelPassedScene extends Phaser.Scene {
@@ -17,6 +19,9 @@ export class LevelPassedScene extends Phaser.Scene {
     const { width, height } = this.sys.game.config;
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
+
+    SoundManager.playMusic(this, 'level-passed', { loop: false, volume: 0.6 });
+
     this.stars.create();
 
     const title = this.add.text(width / 2, height / 3, Texts.levelPassed, {
@@ -44,6 +49,7 @@ export class LevelPassedScene extends Phaser.Scene {
     Settings.setLevel(Settings.getLevel() + 1);
 
     this.time.delayedCall(3500, () => {
+      this.sound.stopAll();
       this.scene.start('prelevel');
     });
   }

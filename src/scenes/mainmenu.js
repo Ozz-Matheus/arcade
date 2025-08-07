@@ -44,6 +44,7 @@ export class MainMenu extends Phaser.Scene {
 
         this.input.once('pointerdown', () => {
             Settings.resetGameState();
+            this.sound.stopAll();
             this.scene.start('prelevel');
         });
     }

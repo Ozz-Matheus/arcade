@@ -13,6 +13,7 @@ export class VictoryScreen extends Phaser.Scene {
     const { width, height } = this.sys.game.config;
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
+
     SoundManager.playMusic(this, 'victory-music', { loop: false, volume: 0.6 });
 
     this.add.text(width / 2, height / 3, Texts.victory, {

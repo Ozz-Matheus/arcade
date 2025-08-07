@@ -69,6 +69,7 @@ export class Game extends Phaser.Scene {
 
         this.bullet_sound = this.sound.add('bullet-sound');
         this.explosion_sound = this.sound.add('explosion-sound');
+        this.die_throw = this.sound.add('die-throw');
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.stars.create();
@@ -240,6 +241,7 @@ export class Game extends Phaser.Scene {
                           yoyo: true
                         });
 
+                        this.die_throw.play();
 
                         this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
 
