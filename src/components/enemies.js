@@ -81,9 +81,10 @@ export class Enemies {
         let frequency = 7000 - level * 500;
         if (frequency < 2500) frequency = 2500;
 
-        let descentTargetY = this.relatedScene.sys.game.config.height - (100 - level * 10);
-        if (descentTargetY > this.relatedScene.sys.game.config.height - 10) {
-            descentTargetY = this.relatedScene.sys.game.config.height - 10;
+        const screenHeight = this.relatedScene.scale.parentSize.height;
+        let descentTargetY = screenHeight - (150 - level * 10);
+        if (descentTargetY > screenHeight - 20) {
+            descentTargetY = screenHeight - 20;
         }
 
         const enemies = this.enemies.getChildren();

@@ -31,7 +31,15 @@ const config = {
   },
   scale: {
     mode: Phaser.Scale.ENVELOP,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    min: {
+      width: 320,
+      height: 240
+    },
+    max: {
+      width: 1280,
+      height: 960
+    }
   },
   backgroundColor: '#000'
 };

@@ -11,7 +11,7 @@ export class ScoreBoard {
 
     create() {
 
-        const { width } = this.relatedScene.sys.game.config;
+        const width = this.relatedScene.scale.parentSize.width;
 
         const scale = getUIScale(this);
 
