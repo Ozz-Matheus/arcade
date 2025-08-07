@@ -12,10 +12,12 @@ export class MainMenu extends Phaser.Scene {
 
         const { width, height } = this.sys.game.config;
 
+        const scale = this.sys.game.config.width / 800;
+
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
         this.add.text(width / 2, height / 2, "Phoenix", {
-            fontSize: '70px',
+            fontSize: `${Math.floor(70 * scale)}px`,
             fontStyle: 'bold',
             fill: '#00b83f',
             fontFamily: 'Verdana',
