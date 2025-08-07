@@ -12,100 +12,101 @@ export class Enemies {
     }
 
     create() {
-
         const level = this.relatedScene.registry.get('level') || 1;
-        const [mainCount, secondaryCount] = level === 1 ? [24, 24] : [36, 36];
+        const screenWidth = this.relatedScene.sys.game.config.width;
 
+        // Calculamos columnas seguras según ancho de pantalla
+        const maxColumns = Math.floor(screenWidth / 64); // cada enemigo ocupa 64px
+
+        // Enemigos por tipo
+        const mainCount = level === 1 ? 24 : 36;
+        const secondaryCount = level === 1 ? 24 : 36;
         const totalEnemies = mainCount + secondaryCount;
 
         this.enemies = this.relatedScene.physics.add.group();
 
-        // Crear main-enemies
+        // Crear enemigos
         for (let i = 0; i < mainCount; i++) {
-          const enemy = this.enemies.create(0, 0, 'main-enemies');
-          enemy.setData('type', 'main');
+            const enemy = this.enemies.create(0, 0, 'main-enemies');
+            enemy.setData('type', 'main');
         }
-
-        // Crear secondary-enemies
         for (let i = 0; i < secondaryCount; i++) {
-          const enemy = this.enemies.create(0, 0, 'secondary-enemies');
-          enemy.setData('type', 'secondary');
+            const enemy = this.enemies.create(0, 0, 'secondary-enemies');
+            enemy.setData('type', 'secondary');
         }
 
+        // Alinear en cuadrícula con columnas ajustadas
         Phaser.Actions.GridAlign(this.enemies.getChildren(), {
-          width: 12,
-          cellWidth: 64,
-          cellHeight: 64,
-          x: 0,
-          y: 64,
+            width: maxColumns,
+            cellWidth: 64,
+            cellHeight: 64,
+            x: 0,
+            y: 64
         });
 
+        // Animaciones
+        this.relatedScene.anims.create({
+            key: 'main-enemies-animation',
+            frames: this.relatedScene.anims.generateFrameNumbers('main-enemies', { frames: [0, 1, 2] }),
+            frameRate: 5,
+            repeat: -1
+        });
 
         this.relatedScene.anims.create({
-          key: 'main-enemies-animation',
-          frames: this.relatedScene.anims.generateFrameNumbers('main-enemies', { frames: [0, 1, 2] }),
-          frameRate: 5,
-          repeat: -1,
+            key: 'secondary-enemies-animation',
+            frames: this.relatedScene.anims.generateFrameNumbers('secondary-enemies', { frames: [0, 1, 2] }),
+            frameRate: 5,
+            repeat: -1
         });
 
-        this.relatedScene.anims.create({
-          key: 'secondary-enemies-animation',
-          frames: this.relatedScene.anims.generateFrameNumbers('secondary-enemies', { frames: [0, 1, 2] }),
-          frameRate: 5,
-          repeat: -1,
-        });
-
+        // Propiedades visuales y animaciones
         this.enemies.getChildren().forEach(enemy => {
-          enemy.setScale(0.4).setAngle(350).setDepth(2);
-          enemy.setData('score', enemy.getData('type') === 'main' ? 100 : 250);
+            enemy.setScale(0.4).setAngle(350).setDepth(2);
+            enemy.setData('score', enemy.getData('type') === 'main' ? 100 : 250);
 
-          if (enemy.getData('type') === 'main') {
-            enemy.play('main-enemies-animation');
-          } else {
-            enemy.play('secondary-enemies-animation');
-          }
+            if (enemy.getData('type') === 'main') {
+                enemy.play('main-enemies-animation');
+            } else {
+                enemy.play('secondary-enemies-animation');
+            }
         });
 
-      this.formation = {
-        ACCELERATION_ON_THE_X_AXIS: 0,
-        SPEED_ON_THE_X_AXIS: 1,
-        JOURNEY: 60,
-      };
+        // Formación y descenso
+        this.formation = {
+            ACCELERATION_ON_THE_X_AXIS: 0,
+            SPEED_ON_THE_X_AXIS: 1,
+            JOURNEY: 60,
+        };
 
-      let frequency = 7000 - level * 500;
-      if (frequency < 2500) frequency = 2500;
+        let frequency = 7000 - level * 500;
+        if (frequency < 2500) frequency = 2500;
 
-      let descentTargetY = this.relatedScene.sys.game.config.height - (100 - level * 10);
-      if (descentTargetY > this.relatedScene.sys.game.config.height - 10) {
-        descentTargetY = this.relatedScene.sys.game.config.height - 10;
-      }
+        let descentTargetY = this.relatedScene.sys.game.config.height - (100 - level * 10);
+        if (descentTargetY > this.relatedScene.sys.game.config.height - 10) {
+            descentTargetY = this.relatedScene.sys.game.config.height - 10;
+        }
 
-      const enemies = this.enemies.getChildren();
-      let descendingEnemies = enemies;
+        const enemies = this.enemies.getChildren();
+        let descendingEnemies = enemies;
+        if (level === 1) {
+            descendingEnemies = enemies.slice(mainCount);
+        }
 
-      if (level === 1) {
-        descendingEnemies = enemies.slice(24);
-      }
-
-      //console.log(`Enemies descending on level ${level}: ${descendingEnemies.length}`);
-
-      this.relatedScene.tweens.add({
-        targets: descendingEnemies,
-        y: descentTargetY,
-        ease: 'Sine.easeInOut',
-        duration: 1000,
-        yoyo: true,
-        delay: 5000,
-        repeat: -1,
-        repeatDelay: frequency
-      });
+        this.relatedScene.tweens.add({
+            targets: descendingEnemies,
+            y: descentTargetY,
+            ease: 'Sine.easeInOut',
+            duration: 1000,
+            yoyo: true,
+            delay: 5000,
+            repeat: -1,
+            repeatDelay: frequency
+        });
 
         // DEBUG: Verificar tipo y score de cada enemigo
         // this.enemies.getChildren().forEach(enemy => {
         //   console.log(`[DEBUG] Enemy creado: tipo=${enemy.getData('type')} | score=${enemy.getData('score')}`);
         // });
-
-
     }
 
     update() {
