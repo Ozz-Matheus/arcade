@@ -17,13 +17,16 @@ export class StartScene extends Phaser.Scene {
 
   create() {
 
-    console.log('config:', this.sys.game.config.width);
-    console.log('displaySize:', this.scale.displaySize.width);
-    console.log('parentSize:', this.scale.parentSize.width);
+    console.log('configWidth:', this.sys.game.config.width);
+    console.log('configHeight:', this.sys.game.config.height);
+    console.log('displaySizeWidth:', this.scale.displaySize.width);
+    console.log('displaySizeHeight:', this.scale.displaySize.height);
+    console.log('parentSizeWidth:', this.scale.parentSize.width);
+    console.log('parentSizeHeight:', this.scale.parentSize.height);
 
     const scale = getUIScale(this);
 
-    const { width, height } = this.sys.game.config;
+    const { width, height } = this.scale.parentSize;
 
     this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0); // fondo negro
 

@@ -9,7 +9,7 @@ export class EnemyIntroScene extends Phaser.Scene {
   }
 
   create() {
-    const { width, height } = this.sys.game.config;
+    const { width, height } = this.scale.parentSize;
 
     const scale = getUIScale(this);
 

@@ -59,7 +59,7 @@ export class Attacks {
     update() {
 
         this.attacks.children.iterate(attack => {
-            if (attack.y > this.relatedScene.sys.game.config.height) {
+            if (attack.y > this.relatedScene.scale.parentSize.height) {
 
                 attack.setActive(false).setVisible(false).disableBody(true, true);
             }

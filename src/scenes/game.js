@@ -16,6 +16,8 @@ import { FireButton } from '../components/firebutton.js';
 import { VirtualGamepad } from '../components/virtualgamepad.js';
 import { FullscreenButton } from '../components/fullscreenbutton.js';
 import { PowerUps } from '../components/powerups.js';
+import { getUIScale } from '../utils/scaling.js';
+
 
 /* ------------------------------------------------------------------------------------------ */
 
@@ -26,6 +28,8 @@ export class Game extends Phaser.Scene {
     }
 
     init() {
+
+        const scale = getUIScale(this);
 
         this.input.addPointer(3);
 

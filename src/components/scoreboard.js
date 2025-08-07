@@ -13,7 +13,7 @@ export class ScoreBoard {
 
         const width = this.relatedScene.scale.parentSize.width;
 
-        const scale = getUIScale(this);
+        const scale = getUIScale(this.relatedScene);
 
         this.labels = {
             points: this.relatedScene.add.text(20, 10, Texts.score(Settings.getPoints()), {

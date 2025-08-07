@@ -13,7 +13,7 @@ export class Enemies {
 
     create() {
         const level = this.relatedScene.registry.get('level') || 1;
-        const screenWidth = this.relatedScene.sys.game.config.width;
+        const screenWidth = this.relatedScene.scale.parentSize.width;
 
         // Calculamos columnas seguras según ancho de pantalla
         const maxColumns = Math.floor(screenWidth / 64); // cada enemigo ocupa 64px
@@ -82,7 +82,9 @@ export class Enemies {
         if (frequency < 2500) frequency = 2500;
 
         const screenHeight = this.relatedScene.scale.parentSize.height;
-        let descentTargetY = screenHeight - (150 - level * 10);
+
+        let descentTargetY = screenHeight - (100 - level * 10);
+
         if (descentTargetY > screenHeight - 20) {
             descentTargetY = screenHeight - 20;
         }

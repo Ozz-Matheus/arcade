@@ -6,7 +6,8 @@ export class FullscreenButton {
   }
 
   create() {
-    const width = this.relatedScene.sys.game.config.width;
+
+    const width = this.relatedScene.scale.parentSize.width;
     const scale = 0.4;
     const margin = 20;
 

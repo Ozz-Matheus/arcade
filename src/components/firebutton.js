@@ -10,9 +10,10 @@ export class FireButton {
     create() {
         const width = this.scene.scale.parentSize.width;
         const height = this.scene.scale.parentSize.height;
+
         const scale = width < 500 ? 0.8 : 1.2;
 
-        this.button = this.scene.add.sprite(width - 100, height - 80, 'virtual-gamepad', 0).setInteractive();
+        this.button = this.scene.add.sprite(width - 50, height - 70, 'virtual-gamepad', 0).setInteractive();
         this.button.setScale(scale);
         this.button.setDepth(1000);
 

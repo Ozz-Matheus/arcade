@@ -12,7 +12,7 @@ import { StartScene } from './scenes/start.js';
 const config = {
   type: Phaser.AUTO,
   width: 800,
-  height: 600,
+  height: 1731,
   scene: [
     StartScene,
     MainMenu,
@@ -30,16 +30,8 @@ const config = {
     }
   },
   scale: {
-    mode: Phaser.Scale.ENVELOP,
+    mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    min: {
-      width: 320,
-      height: 240
-    },
-    max: {
-      width: 1280,
-      height: 960
-    }
   },
   backgroundColor: '#000'
 };
