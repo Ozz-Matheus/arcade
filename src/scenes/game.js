@@ -75,7 +75,8 @@ export class Game extends Phaser.Scene {
         this.explosion_sound = this.sound.add('explosion-sound');
         this.die_throw = this.sound.add('die-throw');
 
-        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, this.scale.parentSize.width, this.scale.parentSize.height, 'background').setOrigin(0, 0);
+
         this.stars.create();
         this.player.create();
         this.bullets.create();

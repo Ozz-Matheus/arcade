@@ -15,7 +15,7 @@ export class MainMenu extends Phaser.Scene {
 
         const scale = getUIScale(this);
 
-        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, this.scale.parentSize.width, this.scale.parentSize.height, 'background').setOrigin(0, 0);
 
         this.add.text(width / 2, height / 2, "Phoenix", {
             fontSize: `${Math.floor(70 * scale)}px`,

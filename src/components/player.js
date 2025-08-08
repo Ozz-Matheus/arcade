@@ -18,11 +18,13 @@ export class Player {
 
     create() {
 
-        const canvasWidth = this.relatedScene.scale.parentSize.width;
-        const canvasHeight = this.relatedScene.scale.parentSize.height;
+        const width = this.relatedScene.scale.parentSize.width;
+        const height = this.relatedScene.scale.parentSize.height;
 
-        const INITIAL_POSITION_IN_X = Math.floor(canvasWidth / 2);
-        const INITIAL_POSITION_IN_Y = Math.floor(canvasHeight - 100);
+        const percentage = height * 0.20;   // 20%
+
+        const INITIAL_POSITION_IN_X = Math.floor(width / 2);
+        const INITIAL_POSITION_IN_Y = Math.floor(height - percentage);
 
         this.player = this.relatedScene.physics.add.sprite(INITIAL_POSITION_IN_X, INITIAL_POSITION_IN_Y, 'player');
         this.player.setScale(0.4, 0.4);

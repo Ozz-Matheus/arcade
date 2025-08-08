@@ -16,11 +16,13 @@ export class VirtualGamepad {
     const width = this.scene.scale.parentSize.width;
     const height = this.scene.scale.parentSize.height;
 
+    const percentage = height * 0.20;   // 20%
+
     const scale = width < 500 ? 0.8 : 1.2;
 
     // offsets simétricos al FireButton (que está en bottom-right)
-    const x = 70;               // margen izquierdo
-    const y = height - 100;      // margen inferior
+    const x = 70;                        // margen izquierdo
+    const y = height - percentage;      // margen inferior
 
     this.center = new Phaser.Math.Vector2(x, y);
     this.radius = 50 * scale;

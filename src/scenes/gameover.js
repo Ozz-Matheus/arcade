@@ -15,7 +15,7 @@ export class GameOver extends Phaser.Scene {
 
         const scale = getUIScale(this);
 
-        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, this.scale.parentSize.width, this.scale.parentSize.height, 'background').setOrigin(0, 0);
 
         SoundManager.playMusic(this, 'gameover-music', { loop: false, volume: 0.6 });
 
