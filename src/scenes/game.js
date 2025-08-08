@@ -118,7 +118,7 @@ export class Game extends Phaser.Scene {
           const w = this.scale.parentSize.width;
           const h = this.scale.parentSize.height;
           const scale = w < 500 ? 0.8 : 1.2;
-          this.fireButton.button.setScale(scale).setPosition(w - 50, h - 70);
+          this.fireButton.button.setScale(scale).setPosition(w - 50, h - 100);
 
           // FullscreenButton (mover esquina sup. derecha)
           this.fullscreen.button.setPosition(w - 20, 20);

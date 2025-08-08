@@ -11,8 +11,8 @@ import { StartScene } from './scenes/start.js';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 1422,
+  width: 1024,
+  height: 768,
   scene: [
     StartScene,
     MainMenu,

@@ -20,7 +20,7 @@ export class VirtualGamepad {
 
     // offsets simétricos al FireButton (que está en bottom-right)
     const x = 70;               // margen izquierdo
-    const y = height - 70;      // margen inferior
+    const y = height - 100;      // margen inferior
 
     this.center = new Phaser.Math.Vector2(x, y);
     this.radius = 50 * scale;
@@ -51,7 +51,7 @@ export class VirtualGamepad {
     const scale = width < 500 ? 0.8 : 1.2;
 
     const x = 70;
-    const y = height - 70;
+    const y = height - 100;
 
     this.center.set(x, y);
     this.radius = 50 * scale;
