@@ -17,12 +17,12 @@ export class StartScene extends Phaser.Scene {
 
   create() {
 
-    console.log('configWidth:', this.sys.game.config.width);
-    console.log('configHeight:', this.sys.game.config.height);
-    console.log('displaySizeWidth:', this.scale.displaySize.width);
-    console.log('displaySizeHeight:', this.scale.displaySize.height);
-    console.log('parentSizeWidth:', this.scale.parentSize.width);
-    console.log('parentSizeHeight:', this.scale.parentSize.height);
+    // console.log('configWidth:', this.sys.game.config.width);
+    // console.log('configHeight:', this.sys.game.config.height);
+    // console.log('displaySizeWidth:', this.scale.displaySize.width);
+    // console.log('displaySizeHeight:', this.scale.displaySize.height);
+    // console.log('parentSizeWidth:', this.scale.parentSize.width);
+    //console.log('parentSizeHeight:', this.scale.parentSize.height);
 
     const scale = getUIScale(this);
 

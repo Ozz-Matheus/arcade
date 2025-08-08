@@ -1,6 +1,6 @@
 // src/components/player.js
 
-/* ------------------------------------------------------------------------------------------ */
+import { getBottomOffset } from '../utils/scaling.js';
 
 export class Player {
 
@@ -8,9 +8,6 @@ export class Player {
     static SPEED_ON_THE_X_AXIS = 520;
     static ACCELERATION_ON_THE_X_AXIS = 500;
     static SPEED_ON_THE_Y_AXIS = 0;
-    //static REVIVE_PAUSE = 4000;
-    //static DURATION_OF_THE_EXPLOSION = 1150;
-
 
     constructor(scene) {
         this.relatedScene = scene;
@@ -21,7 +18,7 @@ export class Player {
         const width = this.relatedScene.scale.parentSize.width;
         const height = this.relatedScene.scale.parentSize.height;
 
-        const percentage = height * 0.20;   // 20%
+        const percentage = getBottomOffset(this.relatedScene);
 
         const INITIAL_POSITION_IN_X = Math.floor(width / 2);
         const INITIAL_POSITION_IN_Y = Math.floor(height - percentage);

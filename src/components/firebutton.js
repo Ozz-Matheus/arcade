@@ -1,5 +1,7 @@
 // src/components/firebutton.js
 
+import { getBottomOffset } from '../utils/scaling.js';
+
 export class FireButton {
 
     constructor(scene) {
@@ -13,12 +15,12 @@ export class FireButton {
 
         const height = this.scene.scale.parentSize.height;
 
-        const percentage = height * 0.20;   // 20%
+        const percentage = getBottomOffset(this.scene);
 
         const scale = width < 500 ? 0.8 : 1.2;
 
         this.button = this.scene.add.sprite(
-            width - 50,                // margen izquierdo
+            width - 70,                // margen izquierdo
             height - percentage,       // margen inferior
             'virtual-gamepad', 0
         ).setInteractive();

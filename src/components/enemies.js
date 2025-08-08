@@ -19,8 +19,8 @@ export class Enemies {
         const maxColumns = Math.floor(screenWidth / 64); // cada enemigo ocupa 64px
 
         // Enemigos por tipo
-        const mainCount = level === 1 ? 24 : 36;
-        const secondaryCount = level === 1 ? 24 : 36;
+        const mainCount = level === 1 ? 24 : 26;
+        const secondaryCount = level === 1 ? 24 : 26;
         const totalEnemies = mainCount + secondaryCount;
 
         this.enemies = this.relatedScene.physics.add.group();

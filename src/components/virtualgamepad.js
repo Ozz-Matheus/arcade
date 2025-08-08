@@ -1,6 +1,10 @@
 // src/components/virtualgamepad.js
 
+import { getBottomOffset } from '../utils/scaling.js';
+
+
 export class VirtualGamepad {
+
   constructor(scene) {
     this.scene = scene;
     this.joystick = null;
@@ -16,7 +20,7 @@ export class VirtualGamepad {
     const width = this.scene.scale.parentSize.width;
     const height = this.scene.scale.parentSize.height;
 
-    const percentage = height * 0.20;   // 20%
+    const percentage = getBottomOffset(this.scene);
 
     const scale = width < 500 ? 0.8 : 1.2;
 
