@@ -70,4 +70,10 @@ export class ScoreBoard {
     updateRecord(value) {
         this.labels.record.setText(Texts.record(value));
     }
+
+    reposition() {
+      const width = this.relatedScene.scale.parentSize.width;
+      this.labels.level.setX(width / 2);
+      this.labels.record.setX(width - 60);
+    }
 }

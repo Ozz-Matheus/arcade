@@ -110,7 +110,22 @@ export class Game extends Phaser.Scene {
 
         this.physics.add.overlap(this.powerups.get(), this.player.get(), this.handlePowerUpPickup, null, this);
 
+        this.scale.on('resize', () => {
+          // Joystick
+          this.virtualGamepad.reposition();
 
+          // FireButton (recalcular y reubicar)
+          const w = this.scale.parentSize.width;
+          const h = this.scale.parentSize.height;
+          const scale = w < 500 ? 0.8 : 1.2;
+          this.fireButton.button.setScale(scale).setPosition(w - 50, h - 70);
+
+          // FullscreenButton (mover esquina sup. derecha)
+          this.fullscreen.button.setPosition(w - 20, 20);
+
+          // ScoreBoard ( Tamaño )
+          this.scoreboard.reposition();
+        });
 
     }
 
@@ -232,7 +247,14 @@ export class Game extends Phaser.Scene {
 
                 this.attacks.get().getChildren().forEach(attack => {
 
-                    if( Phaser.Math.Between(0, 999) < 20 && this.time.now > this.attacks.rhythm.flag ){
+
+                    const aligned = Math.abs(enemy.x - this.player.get().x) < this.player.get().width;
+                    const baseChance = 12;
+                    const alignedBonus = aligned ? 25 : 0;
+                    const levelBonus = Settings.getLevel() * 2;
+
+                    if (Phaser.Math.Between(0, 999) < (baseChance + alignedBonus + levelBonus) &&
+                        this.time.now > this.attacks.rhythm.flag) {
 
                         find = true;
 
