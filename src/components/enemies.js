@@ -19,8 +19,13 @@ export class Enemies {
         // Calculamos columnas seguras según ancho de pantalla
         const maxColumns = Math.floor(screenWidth / 64); // cada enemigo ocupa 64px
 
-        // Calculamos la altura segura de la columna según alto de pantalla
-        const heightColums = - Math.floor(screenHeight / 3.5); // cada enemigo ocupa 64px
+        // Calculamos y de forma segura según alto de pantalla
+        const locationY = (screenHeight < 768)
+            ? -Math.floor(screenHeight / 3.5)
+            : 64;
+
+        // DEBUG: Ver como la altura de los enemigos cambia según el alto de la pantalla.
+        //console.log(`[DEBUG] Enemies ubicación :  y=${locationY}`);
 
         // Enemigos por tipo
         const mainCount = level === 1 ? 24 : 26;
@@ -45,7 +50,7 @@ export class Enemies {
             cellWidth: 64,
             cellHeight: 64,
             x: 0,
-            y: heightColums
+            y: locationY
         });
 
         // Animaciones
