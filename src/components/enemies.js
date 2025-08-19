@@ -12,6 +12,7 @@ export class Enemies {
     }
 
     create() {
+
         const level = this.relatedScene.registry.get('level') || 1;
         const screenWidth = this.relatedScene.scale.parentSize.width;
         const screenHeight = this.relatedScene.scale.parentSize.height;
@@ -24,13 +25,9 @@ export class Enemies {
             ? -Math.floor(screenHeight / 3.5)
             : 64;
 
-        // DEBUG: Ver como la altura de los enemigos cambia según el alto de la pantalla.
-        //console.log(`[DEBUG] Enemies ubicación :  y=${locationY}`);
-
         // Enemigos por tipo
         const mainCount = level === 1 ? 24 : 26;
         const secondaryCount = level === 1 ? 24 : 26;
-        const totalEnemies = mainCount + secondaryCount;
 
         this.enemies = this.relatedScene.physics.add.group();
 
@@ -113,10 +110,23 @@ export class Enemies {
             repeatDelay: frequency
         });
 
-        // DEBUG: Verificar tipo y score de cada enemigo
-        // this.enemies.getChildren().forEach(enemy => {
-        //   console.log(`[DEBUG] Enemy creado: tipo=${enemy.getData('type')} | score=${enemy.getData('score')}`);
-        // });
+        // Alinear de nuevo a y=64 luego de 30 segundos si pantalla es baja
+        this.alignedAgain = false;
+
+        if (screenHeight < 768) {
+            this.relatedScene.time.delayedCall(30000, () => {
+                if (!this.alignedAgain) {
+                    Phaser.Actions.GridAlign(this.enemies.getChildren(), {
+                        width: maxColumns,
+                        cellWidth: 64,
+                        cellHeight: 64,
+                        x: 0,
+                        y: 64
+                    });
+                    this.alignedAgain = true;
+                }
+            });
+        }
     }
 
     update() {
