@@ -14,9 +14,13 @@ export class Enemies {
     create() {
         const level = this.relatedScene.registry.get('level') || 1;
         const screenWidth = this.relatedScene.scale.parentSize.width;
+        const screenHeight = this.relatedScene.scale.parentSize.height;
 
         // Calculamos columnas seguras según ancho de pantalla
         const maxColumns = Math.floor(screenWidth / 64); // cada enemigo ocupa 64px
+
+        // Calculamos la altura segura de la columna según alto de pantalla
+        const heightColums = - Math.floor(screenHeight / 3.5); // cada enemigo ocupa 64px
 
         // Enemigos por tipo
         const mainCount = level === 1 ? 24 : 26;
@@ -41,7 +45,7 @@ export class Enemies {
             cellWidth: 64,
             cellHeight: 64,
             x: 0,
-            y: 64
+            y: heightColums
         });
 
         // Animaciones
@@ -80,8 +84,6 @@ export class Enemies {
 
         let frequency = 7000 - level * 500;
         if (frequency < 2500) frequency = 2500;
-
-        const screenHeight = this.relatedScene.scale.parentSize.height;
 
         let descentTargetY = screenHeight - (100 - level * 10);
 
