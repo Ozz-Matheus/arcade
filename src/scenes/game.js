@@ -17,7 +17,7 @@ import { VirtualGamepad } from '../components/virtualgamepad.js';
 import { FullscreenButton } from '../components/fullscreenbutton.js';
 import { PowerUps } from '../components/powerups.js';
 import { getUIScale } from '../utils/scaling.js';
-
+import { getBottomOffset } from '../utils/scaling.js';
 
 /* ------------------------------------------------------------------------------------------ */
 
@@ -119,13 +119,18 @@ export class Game extends Phaser.Scene {
           const w = this.scale.parentSize.width;
           const h = this.scale.parentSize.height;
           const scale = w < 500 ? 0.8 : 1.2;
-          this.fireButton.button.setScale(scale).setPosition(w - 50, h - 100);
+
+          const percentage = getBottomOffset(this);
+          this.fireButton.button.setScale(scale).setPosition(w - 70, h - percentage);
 
           // FullscreenButton (mover esquina sup. derecha)
           this.fullscreen.button.setPosition(w - 20, 20);
 
           // ScoreBoard ( Tamaño )
           this.scoreboard.reposition();
+
+          // Background
+          this.background.setSize(w, h).setPosition(0, 0);
         });
 
     }

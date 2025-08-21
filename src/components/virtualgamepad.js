@@ -56,12 +56,12 @@ export class VirtualGamepad {
     const height = this.scene.scale.parentSize.height;
     const scale = width < 500 ? 0.8 : 1.2;
 
+    const percentage = getBottomOffset(this.scene);
     const x = 70;
-    const y = height - 100;
+    const y = height - percentage;
 
     this.center.set(x, y);
     this.radius = 50 * scale;
-
     this.joystick.setPosition(x, y).setScale(scale);
     this.joystickPad.setPosition(x, y).setScale(scale);
   }

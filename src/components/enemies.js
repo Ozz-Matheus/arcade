@@ -22,7 +22,7 @@ export class Enemies {
 
         // Calculamos y de forma segura según alto de pantalla
         const locationY = (screenHeight < 768)
-            ? -Math.floor(screenHeight / 3.5)
+            ? -Math.floor(screenHeight / 3)
             : 64;
 
         // Enemigos por tipo
@@ -110,11 +110,11 @@ export class Enemies {
             repeatDelay: frequency
         });
 
-        // Alinear de nuevo a y=64 luego de 30 segundos si pantalla es baja
+        // Alinear de nuevo a y=64 luego de 15 segundos si pantalla es baja
         this.alignedAgain = false;
 
         if (screenHeight < 768) {
-            this.relatedScene.time.delayedCall(30000, () => {
+            this.relatedScene.time.delayedCall(15000, () => {
                 if (!this.alignedAgain) {
                     Phaser.Actions.GridAlign(this.enemies.getChildren(), {
                         width: maxColumns,
