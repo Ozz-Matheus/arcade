@@ -110,23 +110,35 @@ export class Enemies {
             repeatDelay: frequency
         });
 
-        // Alinear de nuevo a y=64 luego de 15 segundos si pantalla es baja
+        // Alinear de nuevo a y=64 luego de la derrota de los enemigos secundarios si pantalla es baja
         this.alignedAgain = false;
 
         if (screenHeight < 768) {
-            this.relatedScene.time.delayedCall(15000, () => {
-                if (!this.alignedAgain) {
-                    Phaser.Actions.GridAlign(this.enemies.getChildren(), {
-                        width: maxColumns,
-                        cellWidth: 64,
-                        cellHeight: 64,
-                        x: 0,
-                        y: 64
-                    });
-                    this.alignedAgain = true;
+            this.relatedScene.time.addEvent({
+                delay: 1000,
+                loop: true,
+                callback: () => {
+                    if (this.alignedAgain) return;
+
+                    const enemies = this.enemies.getChildren();
+                    const secondaryAlive = enemies.some(e => e.active && e.getData('type') === 'secondary');
+
+                    if (!secondaryAlive) {
+                        Phaser.Actions.GridAlign(enemies, {
+                            width: maxColumns,
+                            cellWidth: 64,
+                            cellHeight: 64,
+                            x: 0,
+                            y: 64
+                        });
+                        this.alignedAgain = true;
+                    }
                 }
             });
         }
+
+
+
     }
 
     update() {
