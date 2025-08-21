@@ -99,7 +99,8 @@ export class Enemies {
             descendingEnemies = enemies.slice(mainCount);
         }
 
-        this.relatedScene.tweens.add({
+        // Guardamos referencia al tween de descenso
+        this.descendingTween = this.relatedScene.tweens.add({
             targets: descendingEnemies,
             y: descentTargetY,
             ease: 'Sine.easeInOut',
@@ -110,7 +111,7 @@ export class Enemies {
             repeatDelay: frequency
         });
 
-        // Alinear de nuevo a y=64 luego de la derrota de los enemigos secundarios si pantalla es baja
+        // Realineación tras eliminar secundarios si pantalla es baja
         this.alignedAgain = false;
 
         if (screenHeight < 768) {
@@ -131,13 +132,17 @@ export class Enemies {
                             x: 0,
                             y: 64
                         });
+
+                        // Detenemos el tween de descenso para evitar que deshaga el alineamiento
+                        if (this.descendingTween) {
+                            this.descendingTween.stop();
+                        }
+
                         this.alignedAgain = true;
                     }
                 }
             });
         }
-
-
 
     }
 
