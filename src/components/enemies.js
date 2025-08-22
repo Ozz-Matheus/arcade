@@ -111,38 +111,46 @@ export class Enemies {
             repeatDelay: frequency
         });
 
-        // Realineación tras eliminar secundarios si pantalla es baja
-        this.alignedAgain = false;
+// Realineación tras eliminar secundarios si pantalla es baja
+this.alignedAgain = false;
 
-        if (screenHeight < 768) {
-            this.relatedScene.time.addEvent({
-                delay: 1000,
-                loop: true,
-                callback: () => {
-                    if (this.alignedAgain) return;
+if (screenHeight < 768) {
+    this.relatedScene.time.addEvent({
+        delay: 1000,
+        loop: true,
+        callback: () => {
+            if (this.alignedAgain) return;
 
-                    const enemies = this.enemies.getChildren();
-                    const secondaryAlive = enemies.some(e => e.active && e.getData('type') === 'secondary');
+            const enemies = this.enemies.getChildren();
+            const secondaryAlive = enemies.some(e => e.active && e.getData('type') === 'secondary');
 
-                    if (!secondaryAlive) {
-                        Phaser.Actions.GridAlign(enemies, {
-                            width: maxColumns,
-                            cellWidth: 64,
-                            cellHeight: 64,
-                            x: 0,
-                            y: 64
-                        });
+            if (!secondaryAlive) {
 
-                        // Detenemos el tween de descenso para evitar que deshaga el alineamiento
-                        if (this.descendingTween) {
-                            this.descendingTween.stop();
-                        }
-
-                        this.alignedAgain = true;
-                    }
+                if (this.descendingTween) {
+                    this.descendingTween.stop();
                 }
-            });
+
+                // Reubicamos suavemente con coordenadas según grilla
+                enemies.forEach((enemy, i) => {
+                    const row = Math.floor(i / maxColumns);
+                    const targetY = 64 + row * 64;
+
+                    this.relatedScene.tweens.add({
+                        targets: enemy,
+                        y: targetY,
+                        ease: 'Sine.easeInOut',
+                        duration: 1000,
+                        delay: i * 15
+                    });
+                });
+
+                this.alignedAgain = true;
+            }
         }
+    });
+}
+
+
 
     }
 
