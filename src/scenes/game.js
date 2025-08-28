@@ -324,6 +324,17 @@ export class Game extends Phaser.Scene {
 
       this.damagePlayer(player);
 
+      // Si ya no quedan enemigos activos, ganamos de inmediato
+      if (this.enemies.get().countActive(true) === 0) {
+        this.time.delayedCall(1000, () => {
+          if (Settings.isLastLevel()) {
+            this.scene.start('victory');
+          } else {
+            this.scene.start('levelpassed');
+          }
+        });
+      }
+
     }
 
     damagePlayer(player) {
