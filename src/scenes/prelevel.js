@@ -11,8 +11,12 @@ export class PreLevelScene extends Phaser.Scene {
   create() {
     const { width, height } = this.sys.game.config;
 
+    const H = this.scale.height;
+    const fsTitle = Math.round(H * 0.08);  // títulos
+    const fsBody  = Math.round(H * 0.038); // subtítulos/texto
+
     const levelText = this.add.text(width / 2, height / 2, Texts.level(Settings.getLevel()), {
-      fontSize: '60px',
+      fontSize: `${fsTitle}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',

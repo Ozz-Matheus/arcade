@@ -15,6 +15,12 @@ export class VirtualGamepad {
         };
     }
 
+    setCenter(x, y) {
+      this.center.set(x, y);
+      if (this.joystick)    this.joystick.setPosition(x, y);
+      if (this.joystickPad) this.joystickPad.setPosition(x, y);
+    }
+
     createJoystick(x, y, scale = 1) {
         this.center = new Phaser.Math.Vector2(x, y);
 

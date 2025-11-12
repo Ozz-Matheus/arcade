@@ -19,10 +19,12 @@ export class LivesDisplay {
     const startX = 20;
     const y = 36;
 
+    const hudScale = Math.max(0.12, Math.min(0.24, this.relatedScene.scale.height / 3200));
+
     for (let i = 0; i < Settings.getLives(); i++) {
       const x = startX + i * (LivesDisplay.ICON_WIDTH + LivesDisplay.ICON_SPACING);
       const icon = this.relatedScene.add.image(x, y, 'player')
-        .setScale(LivesDisplay.ICON_SCALE)
+        .setScale(hudScale)
         .setOrigin(0, 0)
         .setAlpha(0.8)
         .setDepth(9999);

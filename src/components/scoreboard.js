@@ -9,11 +9,13 @@ export class ScoreBoard {
     }
 
     create() {
-        const { width } = this.relatedScene.sys.game.config;
+
+        const { width, height } = this.relatedScene.scale;
+        const fs = Math.max(14, Math.round(height * 0.028)); // ~2.8% del alto
 
         this.labels = {
             points: this.relatedScene.add.text(20, 10, Texts.score(Settings.getPoints()), {
-                fontSize: '20px',
+                fontSize: `${fs}px`,
                 fill: '#fff',
                 fontFamily: 'Verdana',
                 shadow: {
@@ -27,7 +29,7 @@ export class ScoreBoard {
             }).setDepth(1000),
 
             level: this.relatedScene.add.text(width / 2, 10, Texts.level(Settings.getLevel()), {
-              fontSize: '20px',
+              fontSize: `${fs}px`,
               fill: '#fff',
               fontFamily: 'Verdana',
               shadow: {
@@ -40,7 +42,7 @@ export class ScoreBoard {
             }).setOrigin(0.5, 0).setDepth(1000),
 
             record: this.relatedScene.add.text(width - 60, 10, Texts.record(Settings.getRecord()), {
-                fontSize: '20px',
+                fontSize: `${fs}px`,
                 fill: '#fff',
                 fontFamily: 'Verdana',
                 shadow: {
@@ -53,6 +55,15 @@ export class ScoreBoard {
 
             }).setOrigin(1, 0).setDepth(1000),
         };
+
+        this.relatedScene.scale.on('resize', ({ width: w, height: h }) => {
+          const fs2 = Math.max(14, Math.round(h * 0.028));
+          this.labels.level.setPosition(w / 2, 10);
+          this.labels.points.setFontSize(fs2);
+          this.labels.level.setFontSize(fs2);
+          this.labels.record.setFontSize(fs2).setPosition(w - 10, 10).setOrigin(1, 0);
+        });
+
     }
 
     updatePoints(value) {

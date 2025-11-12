@@ -98,7 +98,29 @@ export class Game extends Phaser.Scene {
           this
         );
 
-        this.virtualGamepad.createJoystick(100, 520, 1.2);
+        const placeJoystick = () => {
+          const { width, height } = this.scale;
+          const leftMargin = 18, bottomMargin = 18;
+          const x = leftMargin + 80;
+          const y = height - bottomMargin - 80;
+
+          if (!this._vjPlaced) {
+            this.virtualGamepad.createJoystick(x, y, 1.2);
+            this._vjPlaced = true;
+          } else {
+            this.virtualGamepad.setCenter(x, y);
+          }
+        };
+
+        placeJoystick();
+
+        this.input.on('pointerdown', (p) => {
+          const { width } = this.scale;
+          if (p.x >= width * 0.6) this.fireButton.isDown = true;
+        });
+        this.input.on('pointerup', () => this.fireButton.isDown = false);
+
+        this.scale.on('resize', placeJoystick);
 
         this.fireButton.create();
 
