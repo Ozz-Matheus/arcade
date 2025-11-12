@@ -19,7 +19,7 @@ export class LevelPassedScene extends Phaser.Scene {
 
   create() {
 
-    const { title } = fontScale(this);
+    const { fsTitle } = fontScale(this);
 
     const { width, height } = this.sys.game.config;
 
@@ -30,7 +30,7 @@ export class LevelPassedScene extends Phaser.Scene {
     this.stars.create();
 
     const title = this.add.text(width / 2, height / 3, Texts.levelPassed, {
-      fontSize: `${title}px`,
+      fontSize: `${fsTitle}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',
