@@ -1,6 +1,7 @@
 // src/scenes/enemyintro.js
 
 import { Texts } from '../utils/translations.js';
+import { fontScale } from '../utils/ui.js';
 
 export class EnemyIntroScene extends Phaser.Scene {
   constructor() {
@@ -8,12 +9,15 @@ export class EnemyIntroScene extends Phaser.Scene {
   }
 
   create() {
+
+    const { body } = fontScale(this);
+
     const { width, height } = this.sys.game.config;
 
     this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0);
 
     const message = this.add.text(width / 2, height / 1.4, Texts.loading, {
-      fontSize: '32px',
+      fontSize: `${body}px`,
       fill: '#25d366',
       fontFamily: 'Verdana',
       shadow: {

@@ -4,6 +4,7 @@ import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
 import { Settings } from '../settings.js';
+import { fontScale } from '../utils/ui.js';
 
 export class StartScene extends Phaser.Scene {
   constructor() {
@@ -15,12 +16,15 @@ export class StartScene extends Phaser.Scene {
 	}
 
   create() {
+
+    const { body } = fontScale(this);
+
     const { width, height } = this.sys.game.config;
 
     this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0); // fondo negro
 
     this.add.text(width / 2, height / 2, Texts.start, {
-      fontSize: '40px',
+      fontSize: `${body}px`,
       fill: '#ffffff',
       fontFamily: 'Verdana',
       shadow: {

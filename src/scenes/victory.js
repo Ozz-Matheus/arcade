@@ -3,6 +3,7 @@
 import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
+import { fontScale } from '../utils/ui.js';
 
 export class VictoryScreen extends Phaser.Scene {
     constructor() {
@@ -10,6 +11,9 @@ export class VictoryScreen extends Phaser.Scene {
     }
 
   create() {
+
+    const { title, body, md, sm } = fontScale(this);
+
     const { width, height } = this.sys.game.config;
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
@@ -17,7 +21,7 @@ export class VictoryScreen extends Phaser.Scene {
     SoundManager.playMusic(this, 'victory-music', { loop: false, volume: 0.6 });
 
     this.add.text(width / 2, height / 3, Texts.victory, {
-      fontSize: '64px',
+      fontSize: `${title}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',
@@ -31,7 +35,7 @@ export class VictoryScreen extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.add.text(width / 2, height / 2, Texts.score(Settings.getPoints()), {
-      fontSize: '28px',
+      fontSize: `${md}px`,
       fill: '#ffffff',
       fontFamily: 'Verdana',
       shadow: {
@@ -44,7 +48,7 @@ export class VictoryScreen extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.add.text(width / 2, height / 2 + 50, Texts.record(Settings.getRecord()), {
-      fontSize: '24px',
+      fontSize: `${sm}px`,
       fill: '#ffffff',
       fontFamily: 'Verdana',
       shadow: {
@@ -60,7 +64,7 @@ export class VictoryScreen extends Phaser.Scene {
     if (Settings.getPoints() >= Settings.getRecord()) {
       Settings.setRecord(Settings.getPoints());
       this.add.text(width / 2, height / 3 - 60, Texts.newRecord, {
-        fontSize: '32px',
+        fontSize: `${body}px`,
         fill: '#00b83f',
         fontFamily: 'Verdana',
         shadow: {

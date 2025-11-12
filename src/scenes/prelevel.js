@@ -2,6 +2,7 @@
 
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
+import { fontScale } from '../utils/ui.js';
 
 export class PreLevelScene extends Phaser.Scene {
   constructor() {
@@ -9,14 +10,13 @@ export class PreLevelScene extends Phaser.Scene {
   }
 
   create() {
+
+    const { title } = fontScale(this);
+
     const { width, height } = this.sys.game.config;
 
-    const H = this.scale.height;
-    const fsTitle = Math.round(H * 0.08);  // títulos
-    const fsBody  = Math.round(H * 0.038); // subtítulos/texto
-
     const levelText = this.add.text(width / 2, height / 2, Texts.level(Settings.getLevel()), {
-      fontSize: `${fsTitle}px`,
+      fontSize: `${title}px`,
       fontStyle: 'bold',
       fill: '#00b83f',
       fontFamily: 'Verdana',

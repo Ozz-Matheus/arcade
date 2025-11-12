@@ -2,6 +2,7 @@
 
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
+import { fontScale } from '../utils/ui.js';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
@@ -10,12 +11,14 @@ export class MainMenu extends Phaser.Scene {
 
     create() {
 
+        const { title, body } = fontScale(this);
+
         const { width, height } = this.sys.game.config;
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
         this.add.text(width / 2, height / 2, "Phoenix", {
-            fontSize: '70px',
+            fontSize: `${title}px`,
             fontStyle: 'bold',
             fill: '#00b83f',
             fontFamily: 'Verdana',
@@ -30,7 +33,7 @@ export class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.add.text(width / 2, height / 2 + 80, Texts.newGame, {
-            fontSize: '30px',
+            fontSize: `${body}px`,
             fill: '#ffffff',
             fontFamily: 'Verdana',
             shadow: {
