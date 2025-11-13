@@ -4,6 +4,7 @@ import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
 import { fontScale } from '../utils/ui.js';
+import { createBackground } from '../utils/background.js';
 
 export class VictoryScreen extends Phaser.Scene {
     constructor() {
@@ -16,7 +17,7 @@ export class VictoryScreen extends Phaser.Scene {
 
     const { width, height } = this.sys.game.config;
 
-    this.add.image(0, 0, 'background').setOrigin(0, 0);
+    createBackground(this, -10);
 
     SoundManager.playMusic(this, 'victory-music', { loop: false, volume: 0.6 });
 

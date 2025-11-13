@@ -16,6 +16,7 @@ import { FireButton } from '../components/firebutton.js';
 import { VirtualGamepad } from '../components/virtualgamepad.js';
 import { FullscreenButton } from '../components/fullscreenbutton.js';
 import { PowerUps } from '../components/powerups.js';
+import { createBackground } from '../utils/background.js';
 
 /* ------------------------------------------------------------------------------------------ */
 
@@ -71,17 +72,8 @@ export class Game extends Phaser.Scene {
         this.explosion_sound = this.sound.add('explosion-sound');
         this.die_throw = this.sound.add('die-throw');
 
-        const bg = this.add.image(0, 0, 'background')
-          .setOrigin(0, 0)
-          .setScrollFactor(0)
-          .setDepth(-10);
+        createBackground(this, -10);
 
-        const resizeBg = () => {
-          bg.setDisplaySize(this.scale.width, this.scale.height);
-        };
-        resizeBg();
-
-        this.scale.on('resize', resizeBg);
         this.stars.create();
         this.player.create();
         this.bullets.create();

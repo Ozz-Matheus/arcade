@@ -6,7 +6,7 @@ import { loader } from './loader.js';
 import { Settings } from '../settings.js';
 import { Stars } from '../components/stars.js';
 import { fontScale } from '../utils/ui.js';
-
+import { createBackground } from '../utils/background.js';
 
 export class LevelPassedScene extends Phaser.Scene {
   constructor() {
@@ -23,7 +23,7 @@ export class LevelPassedScene extends Phaser.Scene {
 
     const { width, height } = this.sys.game.config;
 
-    this.add.image(0, 0, 'background').setOrigin(0, 0);
+    createBackground(this, -10);
 
     SoundManager.playMusic(this, 'level-passed', { loop: false, volume: 0.6 });
 
