@@ -40,7 +40,18 @@ createJoystick() {
     .setDepth(1000)
     .setDisplaySize(padSize, padSize);
 
-  // (tus listeners actuales se quedan igual)
+    // activar el joystick solo si tocan dentro del radio
+    this.scene.input.on('pointerdown', (p) => {
+      if (!this.joystickPointer &&
+          Phaser.Math.Distance.Between(p.x, p.y, this.center.x, this.center.y) <= this.radius * 2) {
+        this.joystickPointer = p;
+        this.properties.inUse = true;
+      }
+    }, this);
+
+    // ya tienes onPointerUp/onPointerMove — se mantienen
+    this.scene.input.on('pointerup', this.onPointerUp, this);
+    this.scene.input.on('pointermove', this.onPointerMove, this);
 
   // resize
   if (!this._onResize) {

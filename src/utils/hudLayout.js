@@ -13,7 +13,8 @@ export function hudLayout(scene) {
 
   // safe area iOS
   const css = getComputedStyle(document.documentElement);
-  const safeBottom = Number(css.getPropertyValue('--safe-bottom').trim()) || 0;
+  const raw = css.getPropertyValue('--safe-bottom') || '0';
+  const safeBottom = parseFloat(raw) || 0;
 
   const margin = Math.max(16, Math.round(height * 0.02));
   const bottomGap = Math.max(8, Math.round(height * 0.012));
