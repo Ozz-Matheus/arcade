@@ -3,7 +3,7 @@
 export const Texts = {
   start: "Toca para iniciar...",
   newGame: "Nueva Partida",
-  loading: "Cargando...",
+  loading: "CARGANDO...",
   gameOver: "Has perdido",
   victory: "¡Has ganado!",
   newRecord: "¡Nuevo récord!",
