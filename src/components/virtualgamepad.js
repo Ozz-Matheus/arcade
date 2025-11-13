@@ -40,20 +40,18 @@ createJoystick() {
     .setDepth(1000)
     .setDisplaySize(padSize, padSize);
 
-    // activar el joystick solo si tocan dentro del radio
-    this.scene.input.on('pointerdown', (p) => {
-      if (!this.joystickPointer &&
-          Phaser.Math.Distance.Between(p.x, p.y, this.center.x, this.center.y) <= this.radius * 2) {
-        this.joystickPointer = p;
-        this.properties.inUse = true;
-      }
-    }, this);
+  // Activar el joystick sólo si tocan dentro del radio
+  this.scene.input.on('pointerdown', (p) => {
+    if (!this.joystickPointer &&
+        Phaser.Math.Distance.Between(p.x, p.y, this.center.x, this.center.y) <= this.radius * 2) {
+      this.joystickPointer = p;
+      this.properties.inUse = true;
+    }
+  }, this);
+  this.scene.input.on('pointerup', this.onPointerUp, this);
+  this.scene.input.on('pointermove', this.onPointerMove, this);
 
-    // ya tienes onPointerUp/onPointerMove — se mantienen
-    this.scene.input.on('pointerup', this.onPointerUp, this);
-    this.scene.input.on('pointermove', this.onPointerMove, this);
-
-  // resize
+  // Recolocar en cambios de tamaño de Phaser
   if (!this._onResize) {
     this._onResize = () => {
       const { leftPad, padSize } = hudLayout(this.scene);
@@ -65,8 +63,16 @@ createJoystick() {
     this.scene.scale.on('resize', this._onResize);
     this.scene.events.once('shutdown', () => {
       this.scene.scale.off('resize', this._onResize);
+      if (this._vvHandler) window.visualViewport?.removeEventListener('resize', this._vvHandler);
       this._onResize = null;
+      this._vvHandler = null;
     });
+  }
+
+  // Recolocar también cuando Chrome iOS cambia visualViewport (URL bar)
+  if (window.visualViewport && !this._vvHandler) {
+    this._vvHandler = () => this._onResize && this._onResize();
+    window.visualViewport.addEventListener('resize', this._vvHandler, { passive: true });
   }
 }
 

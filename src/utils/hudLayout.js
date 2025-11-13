@@ -2,47 +2,56 @@
 
 export function hudLayout(scene) {
 
-  const { width, height } = scene.scale;
+  // Tamaño lógico del juego (unidades del mundo)
+  const W = scene.scale.width;
+  const H = scene.scale.height;
 
-  // escala móvil
-  const scale = Phaser.Math.Clamp(height / 800, 0.75, 1.0);
+  // Escala móvil (en unidades del mundo)
+  const scale = Phaser.Math.Clamp(H / 800, 0.75, 1.0);
 
-  // tamaño REAL del frame 0 del sprite (no asumimos 100x100)
+  // Tamaño base del sprite de pad (en unidades del mundo)
   const f = scene.textures.getFrame('virtual-gamepad', 0);
   const base = f ? Math.max(f.width, f.height) : 100;
   const padSize = Math.round(base * scale);
 
-  // safe-area CSS
+  // ----- Safe-area y toolbars en PX CSS -----
   const css = getComputedStyle(document.documentElement);
   const raw = css.getPropertyValue('--safe-bottom') || '0';
-  const safeEnv = parseFloat(raw) || 0;
+  const safeEnvPx = parseFloat(raw) || 0;
 
-  // Fallback Chrome iOS: usa visualViewport para estimar la barra inferior
-  let toolbar = 0;
+  // Fallback Chrome iOS: diferencia entre layoutViewport y visualViewport (en PX CSS)
+  let toolbarPx = 0;
   if (window.visualViewport) {
-    const layoutH = document.documentElement.clientHeight; // alto del layout viewport
-    toolbar = Math.max(0, Math.round(layoutH - window.visualViewport.height));
+    const layoutH = document.documentElement.clientHeight;
+    toolbarPx = Math.max(0, Math.round(layoutH - window.visualViewport.height));
   }
 
-  // Extra mínimo en iOS para no rozar la "home bar"
+  // Pequeño extra para no tocar la "home bar"
   const isIOS = !!scene.sys.game.device?.os?.iOS;
-  const extra = isIOS ? 6 : 0;
+  const extraPx = isIOS ? 6 : 0;
 
-  const safeBottom = Math.max(safeEnv, toolbar) + extra;
+  const safeBottomPx = Math.max(safeEnvPx, toolbarPx) + extraPx;
 
-  const margin = Math.max(16, Math.round(height * 0.02));
-  const bottomGap = Math.max(8, Math.round(height * 0.012));
-  const baselineY = Math.round(height - (margin + bottomGap + safeBottom));
+  // ----- Conversión PX CSS -> unidades del mundo -----
+  // Escala visual aplicada al canvas (displaySize / gameSize)
+  const dispH = scene.scale.displaySize?.height ?? H;
+  const scaleY = dispH / H || 1;
+  const safeBottom = safeBottomPx / scaleY; // ahora en unidades del mundo
 
-  // ⬅️ joystick (origin 0.5)
+  // Márgenes (en unidades del mundo)
+  const margin = Math.max(16, Math.round(H * 0.02));
+  const bottomGap = Math.max(8, Math.round(H * 0.012));
+  const baselineY = Math.round(H - (margin + bottomGap + safeBottom));
+
+  // ⬅️ Joystick (origin 0.5)
   const leftPad = {
     x: Math.round(margin + padSize / 2),
     y: Math.round(baselineY - padSize / 2),
   };
 
-  // ➡️ fire (origin 1,1)
+  // ➡️ Fire (origin 1,1)
   const fire = {
-    x: Math.round(width - margin),
+    x: Math.round(W - margin),
     y: baselineY,
   };
 
