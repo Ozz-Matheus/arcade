@@ -9,8 +9,8 @@ import { EnemyIntroScene } from './scenes/enemyintro.js';
 import { LevelPassedScene } from './scenes/levelpassed.js';
 import { StartScene } from './scenes/start.js';
 
-const BASE_WIDTH = 360;
-const BASE_HEIGHT = 640;
+const BASE_WIDTH = 390;
+const BASE_HEIGHT = 844;
 const DPR = Math.min(window.devicePixelRatio || 1, 2); // límite por rendimiento
 
 const config = {

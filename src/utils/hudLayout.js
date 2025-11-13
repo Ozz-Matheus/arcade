@@ -1,6 +1,7 @@
 // src/utils/hudLayout.js
 
 export function hudLayout(scene) {
+
   const { width, height } = scene.scale;
 
   // escala mobile-first (sin tocar jugabilidad)

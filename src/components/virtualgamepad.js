@@ -20,7 +20,8 @@ export class VirtualGamepad {
     if (this.joystickPad) this.joystickPad.setPosition(x, y);
   }
 
-  createJoystick(/* x, y, scale */) {
+  createJoystick() {
+
     const { leftPad, scale } = hudLayout(this.scene);
 
     this.radius = 40 * scale;
