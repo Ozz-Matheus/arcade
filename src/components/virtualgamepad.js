@@ -14,6 +14,7 @@ export class VirtualGamepad {
     this.center = new Phaser.Math.Vector2(0, 0);
     this._onResize = null;
     this._vvHandler = null;
+    this._vvScrollHandler = null;
   }
 
   setCenter(x, y) {
@@ -23,50 +24,75 @@ export class VirtualGamepad {
   }
 
   createJoystick() {
-    const { leftPad, padSize } = hudLayout(this.scene);
+    const place = () => {
+      const { leftPad, padSize } = hudLayout(this.scene);
 
-    this.radius = Math.round(0.4 * padSize);
-    if (!this.center) this.center = new Phaser.Math.Vector2(leftPad.x, leftPad.y);
-    else this.center.set(leftPad.x, leftPad.y);
+      // radio del joystick según tamaño del pad
+      this.radius = Math.round(0.4 * padSize);
 
-    this.joystick = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 2)
-      .setInteractive()
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(1000)
-      .setDisplaySize(padSize, padSize);
+      // centra y (si ya existen) recoloca sprites
+      this.setCenter(leftPad.x, leftPad.y);
 
-    this.joystickPad = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 3)
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(1000)
-      .setDisplaySize(padSize, padSize);
+      if (!this.joystick) {
+        // knob
+        this.joystick = this.scene.add
+          .sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 2)
+          .setInteractive()
+          .setOrigin(0.5)
+          .setScrollFactor(0)
+          .setDepth(1000)
+          .setDisplaySize(padSize, padSize);
 
-    this.scene.input.on('pointerdown', (p) => {
-      if (!this.joystickPointer &&
-          Phaser.Math.Distance.Between(p.x, p.y, this.center.x, this.center.y) <= this.radius * 2) {
-        this.joystickPointer = p;
-        this.properties.inUse = true;
+        // base
+        this.joystickPad = this.scene.add
+          .sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 3)
+          .setOrigin(0.5)
+          .setScrollFactor(0)
+          .setDepth(1000)
+          .setDisplaySize(padSize, padSize);
+
+        // input (solo una vez)
+        this.scene.input.on('pointerdown', (p) => {
+          if (
+            !this.joystickPointer &&
+            Phaser.Math.Distance.Between(p.x, p.y, this.center.x, this.center.y) <= this.radius * 2
+          ) {
+            this.joystickPointer = p;
+            this.properties.inUse = true;
+          }
+        }, this);
+
+        this.scene.input.on('pointerup', this.onPointerUp, this);
+        this.scene.input.on('pointermove', this.onPointerMove, this);
+      } else {
+        this.joystick
+          .setPosition(leftPad.x, leftPad.y)
+          .setDisplaySize(padSize, padSize);
+
+        this.joystickPad
+          .setPosition(this.center.x, this.center.y)
+          .setDisplaySize(padSize, padSize);
       }
-    }, this);
-    this.scene.input.on('pointerup', this.onPointerUp, this);
-    this.scene.input.on('pointermove', this.onPointerMove, this);
+    };
+
+    place();
 
     if (!this._onResize) {
-      this._onResize = () => {
-        const { leftPad, padSize } = hudLayout(this.scene);
-        this.radius = Math.round(0.4 * padSize);
-        this.setCenter(leftPad.x, leftPad.y);
-        this.joystick?.setDisplaySize(padSize, padSize);
-        this.joystickPad?.setDisplaySize(padSize, padSize);
-      };
+      this._onResize = () => place();
       this.scene.scale.on('resize', this._onResize);
+
       this.scene.events.once('shutdown', () => {
         this.scene.scale.off('resize', this._onResize);
+
         if (this._vvHandler) {
           window.visualViewport?.removeEventListener('resize', this._vvHandler);
           this._vvHandler = null;
         }
+        if (this._vvScrollHandler) {
+          window.visualViewport?.removeEventListener('scroll', this._vvScrollHandler);
+          this._vvScrollHandler = null;
+        }
+
         this._onResize = null;
       });
     }
@@ -74,6 +100,12 @@ export class VirtualGamepad {
     if (window.visualViewport && !this._vvHandler) {
       this._vvHandler = () => this._onResize && this._onResize();
       window.visualViewport.addEventListener('resize', this._vvHandler, { passive: true });
+    }
+
+    // 👇 nuevo para Chrome iOS
+    if (window.visualViewport && !this._vvScrollHandler) {
+      this._vvScrollHandler = () => this._onResize && this._onResize();
+      window.visualViewport.addEventListener('scroll', this._vvScrollHandler, { passive: true });
     }
   }
 

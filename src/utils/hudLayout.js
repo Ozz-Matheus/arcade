@@ -19,26 +19,33 @@ export function hudLayout(scene) {
   const raw = css.getPropertyValue('--safe-bottom') || '0';
   const safeEnvPx = parseFloat(raw) || 0;
 
-  // Fallback Chrome iOS: diferencia entre layoutViewport y visualViewport (en PX CSS)
+  // Fallback robusto para iOS (Chrome y otros)
   let toolbarPx = 0;
   if (window.visualViewport) {
-    const layoutH = document.documentElement.clientHeight;
-    toolbarPx = Math.max(0, Math.round(layoutH - window.visualViewport.height));
+    const vv = window.visualViewport;
+    const layoutH = document.documentElement.clientHeight || H; // px CSS
+    const innerH  = window.innerHeight || layoutH;
+
+    // Dos estimaciones; tomamos la mayor
+    const delta1 = layoutH - vv.height;
+    const delta2 = innerH - vv.height - (vv.offsetTop || 0);
+
+    toolbarPx = Math.max(0, Math.ceil(Math.max(delta1, delta2)));
   }
 
   // Pequeño extra para no tocar la "home bar"
   const isIOS = !!scene.sys.game.device?.os?.iOS;
-  const extraPx = isIOS ? 6 : 0;
+  const isiOSChrome = isIOS && /CriOS|Chrome/i.test(navigator.userAgent);
+  const extraPx = isIOS ? (isiOSChrome ? 14 : 6) : 0;
 
   const safeBottomPx = Math.max(safeEnvPx, toolbarPx) + extraPx;
 
   // ----- Conversión PX CSS -> unidades del mundo -----
-  // Escala visual aplicada al canvas (displaySize / gameSize)
-  const dispH = scene.scale.displaySize?.height ?? H;
+  const dispH  = scene.scale.displaySize?.height ?? H;
   const scaleY = dispH / H || 1;
   const safeBottom = safeBottomPx / scaleY; // ahora en unidades del mundo
 
-  // Márgenes (en unidades del mundo)
+  // Márgenes y línea base inferior
   const margin = Math.max(16, Math.round(H * 0.02));
   const bottomGap = Math.max(8, Math.round(H * 0.012));
   const baselineY = Math.round(H - (margin + bottomGap + safeBottom));
