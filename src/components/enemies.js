@@ -55,24 +55,24 @@ export class Enemies {
         enemy.play(enemy.getData('type') === 'main' ? 'main-enemies-animation' : 'secondary-enemies-animation');
       });
 
-      // Centrar y subir un poco (12 cols), usando el ancho REAL del sprite
+      // Centrar y subir un poco (12 cols) usando el ancho REAL del sprite
       const W = this.relatedScene.scale.width;
       const cols = 12;
 
       const sample = this.enemies.getChildren()[0];
-      const dw = Math.ceil(sample.displayWidth);                         // ancho real con escala
-      const cellW = Math.max(32, Math.floor((W - dw) / (cols - 1)));     // paso para que quepa el total
-      const totalSpan = dw + (cols - 1) * cellW;                          // ancho total de la formación
-      //const startX = Math.round((W - totalSpan) / 2 + dw / 2);
+      const dw = Math.ceil(sample.displayWidth);                 // ancho real (con escala)
+      const cellW = Math.max(32, Math.floor((W - dw) / (cols - 1)));
+      const totalSpan = dw + (cols - 1) * cellW;
+      const startX = Math.round((W - totalSpan) / 2 + dw / 2);
 
-      // más arriba en móviles (sin pegarse al HUD)
+      // más arriba en móviles (sin pegar al HUD)
       const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
 
       Phaser.Actions.GridAlign(this.enemies.getChildren(), {
         width: cols,
         cellWidth: cellW,
         cellHeight: 64,
-        x: -64, // Cambie esto startX por -64 y salio bien ubicados los enemigos
+        x: -64,
         y: top,
       });
 

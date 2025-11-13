@@ -1,11 +1,18 @@
 // src/components/fullscreenbutton.js
 
+import { hudLayout } from '../utils/hudLayout.js';
+
 export class FullscreenButton {
   constructor(scene) {
     this.relatedScene = scene;
   }
 
   create() {
+
+    // no mostrar en mobile
+    if (!hudLayout(this.relatedScene).showFullscreen) return;
+
+
     const margin = 16;
     const scale = 0.4;
 
