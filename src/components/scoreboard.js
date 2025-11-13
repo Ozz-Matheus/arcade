@@ -9,62 +9,47 @@ export class ScoreBoard {
     }
 
     create() {
+      const { width, height } = this.relatedScene.scale;
 
-        const { width, height } = this.relatedScene.scale;
-        const fs = Math.max(14, Math.round(height * 0.028)); // ~2.8% del alto
+      const fs = Math.max(14, Math.round(height * 0.024));
+      const top = 8;
+      const rowGap = Math.round(fs * 0.5);
 
-        this.labels = {
-            points: this.relatedScene.add.text(20, 10, Texts.score(Settings.getPoints()), {
-                fontSize: `${fs}px`,
-                fill: '#fff',
-                fontFamily: 'Verdana',
-                shadow: {
-                  offsetX: 1,
-                  offsetY: 1,
-                  color: '#2ef',
-                  blur: 8,
-                  fill: true
-                }
+      this.labels = {
+        points: this.relatedScene.add.text(20, top, Texts.score(Settings.getPoints()), {
+          fontSize: `${fs}px`,
+          fill: '#fff',
+          fontFamily: 'Verdana',
+          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+        }).setDepth(1000),
 
-            }).setDepth(1000),
+        record: this.relatedScene.add.text(width - 10, top, Texts.record(Settings.getRecord()), {
+          fontSize: `${fs}px`,
+          fill: '#fff',
+          fontFamily: 'Verdana',
+          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+        }).setOrigin(1, 0).setDepth(1000),
 
-            level: this.relatedScene.add.text(width / 2, 10, Texts.level(Settings.getLevel()), {
-              fontSize: `${fs}px`,
-              fill: '#fff',
-              fontFamily: 'Verdana',
-              shadow: {
-                offsetX: 1,
-                offsetY: 1,
-                color: '#2ef',
-                blur: 8,
-                fill: true
-              }
-            }).setOrigin(0.5, 0).setDepth(1000),
+        // Segunda fila centrada
+        level: this.relatedScene.add.text(width / 2, top + fs + rowGap, Texts.level(Settings.getLevel()), {
+          fontSize: `${fs}px`,
+          fill: '#fff',
+          fontFamily: 'Verdana',
+          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+        }).setOrigin(0.5, 0).setDepth(1000),
+      };
 
-            record: this.relatedScene.add.text(width - 60, 10, Texts.record(Settings.getRecord()), {
-                fontSize: `${fs}px`,
-                fill: '#fff',
-                fontFamily: 'Verdana',
-                shadow: {
-                  offsetX: 1,
-                  offsetY: 1,
-                  color: '#2ef',
-                  blur: 8,
-                  fill: true
-                }
+      // Reposiciona/escalado en resize
+      this.relatedScene.scale.on('resize', ({ width: w, height: h }) => {
+        const fs2 = Math.max(14, Math.round(h * 0.028));
+        const rowGap2 = Math.round(fs2 * 0.25);
 
-            }).setOrigin(1, 0).setDepth(1000),
-        };
-
-        this.relatedScene.scale.on('resize', ({ width: w, height: h }) => {
-          const fs2 = Math.max(14, Math.round(h * 0.028));
-          this.labels.level.setPosition(w / 2, 10);
-          this.labels.points.setFontSize(fs2);
-          this.labels.level.setFontSize(fs2);
-          this.labels.record.setFontSize(fs2).setPosition(w - 10, 10).setOrigin(1, 0);
-        });
-
+        this.labels.points.setFontSize(fs2).setPosition(20, top);
+        this.labels.record.setFontSize(fs2).setPosition(w - 10, top).setOrigin(1, 0);
+        this.labels.level .setFontSize(fs2).setPosition(w / 2, top + fs2 + rowGap2);
+      });
     }
+
 
     updatePoints(value) {
         this.labels.points.setText(Texts.score(value));

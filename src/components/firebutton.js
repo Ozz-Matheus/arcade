@@ -8,7 +8,7 @@ export class FireButton {
     }
 
     create() {
-      const scale = 1.2;
+      const scale = 0.95;
       const margin = 18;
 
       const place = () => {

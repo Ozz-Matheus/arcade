@@ -16,7 +16,7 @@ export class FullscreenButton {
           .sprite(width - margin, margin, 'fullscreen-button')
           .setInteractive()
           .setScale(scale)
-          .setOrigin(1, 0)
+          .setOrigin(1,0)
           .setFrame(0)
           .setDepth(9999)
           .setScrollFactor(0);

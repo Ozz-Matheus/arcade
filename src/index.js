@@ -20,18 +20,28 @@ const config = {
   height: BASE_HEIGHT,
   resolution: DPR,
   scene: [
-    StartScene, MainMenu, PreLevelScene, EnemyIntroScene,
-    Game, GameOver, VictoryScreen, LevelPassedScene
+    StartScene,
+    MainMenu,
+    PreLevelScene,
+    EnemyIntroScene,
+    Game,
+    GameOver,
+    VictoryScreen,
+    LevelPassedScene
   ],
-  physics: { default: 'arcade', arcade: { debug: false } },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: false
+    }
+  },
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     expandParent: true,
-    parent: null,
+    //parent: null,
   }
 };
 
 const game = new Phaser.Game(config);
 window.addEventListener('resize', () => game.scale.refresh());
-

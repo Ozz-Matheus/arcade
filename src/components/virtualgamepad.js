@@ -1,6 +1,7 @@
 // src/components/virtualgamepad.js
 
 export class VirtualGamepad {
+
     constructor(scene) {
         this.scene = scene;
         this.joystick = null;
