@@ -1,23 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <title>Arcade</title>
   <style>
     :root{
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-top:    env(safe-area-inset-top, 0px);
+      --safe-right:  env(safe-area-inset-right, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-left:   env(safe-area-inset-left, 0px);
     }
-    html,body{height:100%}
+    /* alto real en móviles (sin afectar canvas con padding) */
+    html, body { height: 100dvh; }
     body{
-      margin:0;background:#000;
-      padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-      overflow:hidden;         /* evita scroll accidental */
-      touch-action:none;       /* bloquea gestos del navegador */
+      margin: 0;
+      padding: 0;                 /*  no empujes el canvas */
+      background: #000;
+      overflow: hidden;           /* evita scroll accidental */
+      touch-action: none;         /* bloquea gestos del navegador */
     }
-    canvas{display:block;border:none} /* quita borde */
+    canvas{ display:block; border:none }
   </style>
 </head>
 <body>

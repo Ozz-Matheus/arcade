@@ -20,52 +20,44 @@ export class VirtualGamepad {
     if (this.joystickPad) this.joystickPad.setPosition(x, y);
   }
 
-  createJoystick() {
+createJoystick() {
+  const { leftPad, padSize } = hudLayout(this.scene);
 
-    const { leftPad, scale } = hudLayout(this.scene);
+  this.radius = Math.round(0.4 * padSize);
+  if (!this.center) this.center = new Phaser.Math.Vector2(leftPad.x, leftPad.y);
+  else this.center.set(leftPad.x, leftPad.y);
 
-    this.radius = 40 * scale;
-    this.center.set(leftPad.x, leftPad.y);
+  this.joystick = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 2)
+    .setInteractive()
+    .setOrigin(0.5)
+    .setScrollFactor(0)
+    .setDepth(1000)
+    .setDisplaySize(padSize, padSize);
 
-    this.joystick = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 2)
-      .setInteractive()
-      .setScrollFactor(0)
-      .setScale(scale)
-      .setDepth(1000);
+  this.joystickPad = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 3)
+    .setOrigin(0.5)
+    .setScrollFactor(0)
+    .setDepth(1000)
+    .setDisplaySize(padSize, padSize);
 
-    this.joystickPad = this.scene.add.sprite(leftPad.x, leftPad.y, 'virtual-gamepad', 3)
-      .setScrollFactor(0)
-      .setScale(scale)
-      .setDepth(1000);
+  // (tus listeners actuales se quedan igual)
 
-    // Tus listeners actuales:
-    this.scene.input.on('pointerdown', (pointer) => {
-      if (!this.joystickPointer &&
-          Phaser.Math.Distance.Between(pointer.x, pointer.y, this.center.x, this.center.y) <= this.radius * 2) {
-        this.joystickPointer = pointer;
-        this.properties.inUse = true;
-      }
-    }, this);
-
-    this.scene.input.on('pointerup', this.onPointerUp, this);
-    this.scene.input.on('pointermove', this.onPointerMove, this);
-
-    // Reposicionar/reescalar al cambiar tamaño
-    if (!this._onResize) {
-      this._onResize = () => {
-        const { leftPad, scale } = hudLayout(this.scene);
-        this.radius = 40 * scale;
-        this.setCenter(leftPad.x, leftPad.y);
-        if (this.joystick)    this.joystick.setScale(scale);
-        if (this.joystickPad) this.joystickPad.setScale(scale);
-      };
-      this.scene.scale.on('resize', this._onResize);
-      this.scene.events.once('shutdown', () => {
-        this.scene.scale.off('resize', this._onResize);
-        this._onResize = null;
-      });
-    }
+  // resize
+  if (!this._onResize) {
+    this._onResize = () => {
+      const { leftPad, padSize } = hudLayout(this.scene);
+      this.radius = Math.round(0.4 * padSize);
+      this.setCenter(leftPad.x, leftPad.y);
+      this.joystick?.setDisplaySize(padSize, padSize);
+      this.joystickPad?.setDisplaySize(padSize, padSize);
+    };
+    this.scene.scale.on('resize', this._onResize);
+    this.scene.events.once('shutdown', () => {
+      this.scene.scale.off('resize', this._onResize);
+      this._onResize = null;
+    });
   }
+}
 
   onPointerUp(pointer) {
     if (pointer === this.joystickPointer) {

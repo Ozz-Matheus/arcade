@@ -1,37 +1,36 @@
 // src/utils/hudLayout.js
 
 export function hudLayout(scene) {
-
   const { width, height } = scene.scale;
 
-  // Escala mobile-first cómoda
+  // escala móvil
   const scale = Phaser.Math.Clamp(height / 800, 0.75, 1.0);
 
-  // Tamaño real del sprite del gamepad (de tu spritesheet: 100x100)
-  const SPRITE_SIZE = 100;
-  const padSize = SPRITE_SIZE * scale;
+  // tamaño REAL del frame 0 del sprite (no asumimos 100x100)
+  const f = scene.textures.getFrame('virtual-gamepad', 0);
+  const base = f ? Math.max(f.width, f.height) : 100;
+  const padSize = Math.round(base * scale);
 
-  // Márgenes y un pequeño gap inferior para que nada toque el borde
-  const margin = Math.round(Math.max(16, height * 0.02));
-  const bottomGap = Math.round(Math.max(8, height * 0.012));
+  // safe area iOS
+  const css = getComputedStyle(document.documentElement);
+  const safeBottom = Number(css.getPropertyValue('--safe-bottom').trim()) || 0;
 
-  // Joystick (centrado): dejamos su borde izquierdo en "margin"
-  // y su borde inferior alineado con "height - margin - bottomGap"
+  const margin = Math.max(16, Math.round(height * 0.02));
+  const bottomGap = Math.max(8, Math.round(height * 0.012));
+  const baselineY = Math.round(height - (margin + bottomGap + safeBottom));
+
+  // ⬅️ joystick (origin 0.5)
   const leftPad = {
-    x: margin + padSize / 2,
-    y: height - margin - bottomGap - padSize / 2,
+    x: Math.round(margin + padSize / 2),
+    y: Math.round(baselineY - padSize / 2),
   };
 
-  // Botón de disparo (anclado a esquina con origin(1,1)):
-  // mismo baseline que el joystick
+  // ➡️ fire (origin 1,1)
   const fire = {
-    x: width - margin - bottomGap,
-    y: height - margin - bottomGap,
+    x: Math.round(width - margin),
+    y: baselineY,
   };
 
-  // Fullscreen solo en desktop
   const showFullscreen = !!scene.sys.game.device?.os?.desktop;
-
-  return { scale, margin, leftPad, fire, showFullscreen };
-
+  return { scale, padSize, leftPad, fire, showFullscreen };
 }

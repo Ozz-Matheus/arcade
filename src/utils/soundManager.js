@@ -4,6 +4,7 @@ export class SoundManager {
   static music = null;
 
   static playMusic(scene, key, options = { loop: true, volume: 0.5 }) {
+
     SoundManager.stopAll(scene);
 
     SoundManager.music = scene.sound.add(key, options);

@@ -108,7 +108,7 @@ export class Game extends Phaser.Scene {
           this
         );
 
-        this.virtualGamepad.createJoystick(90, this.scale.height - 110, 0.95);
+        this.virtualGamepad.createJoystick();
 
         this.fireButton.create();
 
