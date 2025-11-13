@@ -41,8 +41,9 @@ export class ScoreBoard {
 
       // Reposiciona/escalado en resize
       this.relatedScene.scale.on('resize', ({ width: w, height: h }) => {
-        const fs2 = Math.max(14, Math.round(h * 0.028));
-        const rowGap2 = Math.round(fs2 * 0.25);
+
+        const fs2 = Math.max(14, Math.round(h * 0.024)); // igual que en create()
+        const rowGap2 = Math.round(fs2 * 0.5);           // igual que en create()
 
         this.labels.points.setFontSize(fs2).setPosition(20, top);
         this.labels.record.setFontSize(fs2).setPosition(w - 10, top).setOrigin(1, 0);

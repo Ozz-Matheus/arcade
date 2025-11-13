@@ -80,8 +80,8 @@ export class Game extends Phaser.Scene {
           bg.setDisplaySize(this.scale.width, this.scale.height);
         };
         resizeBg();
-        this.scale.on('resize', resizeBg);
 
+        this.scale.on('resize', resizeBg);
         this.stars.create();
         this.player.create();
         this.bullets.create();
@@ -108,33 +108,7 @@ export class Game extends Phaser.Scene {
           this
         );
 
-        const placeJoystick = () => {
-          const { width, height } = this.scale;
-          const leftMargin = 18, bottomMargin = 18;
-
-          // escala según alto del dispositivo (mobile-first)
-          const joyScale = Phaser.Math.Clamp(height / 800, 0.75, 0.4);
-
-          const x = leftMargin + 70;
-          const y = height - bottomMargin - 70;
-
-          if (!this._vjPlaced) {
-            this.virtualGamepad.createJoystick(x, y, joyScale);
-            this._vjPlaced = true;
-          } else {
-            this.virtualGamepad.setCenter(x, y);
-          }
-        };
-
-        placeJoystick();
-
-        this.input.on('pointerdown', (p) => {
-          const { width } = this.scale;
-          if (p.x >= width * 0.6) this.fireButton.isDown = true;
-        });
-        this.input.on('pointerup', () => this.fireButton.isDown = false);
-
-        this.scale.on('resize', placeJoystick);
+        this.virtualGamepad.createJoystick(100, 520, 1.2);
 
         this.fireButton.create();
 
@@ -160,14 +134,10 @@ export class Game extends Phaser.Scene {
 
         const props = this.virtualGamepad.getProperties();
 
-        if (props.inUse) {
-          if (props.left) {
-            this.player.get().setVelocityX(-Player.SPEED_ON_THE_X_AXIS);
-          } else if (props.right) {
-            this.player.get().setVelocityX(Player.SPEED_ON_THE_X_AXIS);
-          } else {
-            this.player.get().setVelocityX(0);
-          }
+        if (props.left) {
+          this.player.get().setVelocityX(-Player.SPEED_ON_THE_X_AXIS);
+        } else if (props.right) {
+          this.player.get().setVelocityX(Player.SPEED_ON_THE_X_AXIS);
         }
 
     }

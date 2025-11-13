@@ -1,7 +1,6 @@
 // src/components/virtualgamepad.js
 
 export class VirtualGamepad {
-
     constructor(scene) {
         this.scene = scene;
         this.joystick = null;
@@ -14,12 +13,6 @@ export class VirtualGamepad {
             right: false,
             x: 0,
         };
-    }
-
-    setCenter(x, y) {
-      this.center.set(x, y);
-      if (this.joystick)    this.joystick.setPosition(x, y);
-      if (this.joystickPad) this.joystickPad.setPosition(x, y);
     }
 
     createJoystick(x, y, scale = 1) {
