@@ -167,43 +167,20 @@ export class Game extends Phaser.Scene {
     }
 
 
-    handleBulletHitsEnemy(enemies, bullets){
+    handleBulletHitsEnemy(enemies, bullets) {
 
-        //console.log("explosion");
-
-        let find = false;
-
-        this.explosions.get().getChildren().forEach(explosion => {
-
-            if(!explosion.active && !explosion.visible && !find){
-
-                find = true;
-
-                explosion.setActive(true).setVisible(true);
-                explosion.setX( enemies.x );
-                explosion.setY( enemies.y );
-                explosion.setScale(2);
-                this.explosion_sound.play();
-
-                setTimeout( ()=> {
-                    explosion.setActive(false).setVisible(false);
-                }, Explosions.DURATION_OF_THE_EXPLOSION);
-
-            }
-        });
+        this.explosions.spawn(enemies.x, enemies.y, this.explosion_sound);
 
         const score = enemies.getData('score') ?? 100;
         Settings.setPoints(Settings.getPoints() + score);
-
         this.scoreboard.updatePoints(Settings.getPoints());
-
 
         bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
 
         this.particles.spawn(enemies.x, enemies.y);
 
-        if (Phaser.Math.Between(0, 100) < 2) {  // 2% chance
+        if (Phaser.Math.Between(0, 100) < 2) {
           this.powerups.spawn(enemies.x, enemies.y);
         }
 
@@ -214,7 +191,7 @@ export class Game extends Phaser.Scene {
             } else {
               this.scene.start('levelpassed');
             }
-          });
+           });
         }
     }
 

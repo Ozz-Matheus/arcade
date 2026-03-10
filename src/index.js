@@ -44,13 +44,29 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-window.addEventListener('resize', () => game.scale.refresh());
+// Función utilitaria para evitar saturar el procesador
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Aplicamos el debounce (100ms de espera)
+const onResize = debounce(() => game.scale.refresh(), 100);
+window.addEventListener('resize', onResize);
 
 if (window.visualViewport) {
-    const onViewportChange = () => {
+    const onViewportChange = debounce(() => {
         game.scale.refresh();
         game.events.emit('viewport-changed');
-    };
+    }, 100);
+
     window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
     window.visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
 }
