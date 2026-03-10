@@ -49,6 +49,17 @@ export class ScoreBoard {
       this.relatedScene.events.once('shutdown', () => {
         this.relatedScene.scale.off('resize', handleResize);
       });
+
+      // Escuchar cambios en los puntos a nivel global
+      this.relatedScene.registry.events.on('changedata-points', (parent, value) => {
+        this.updatePoints(value);
+      });
+
+      // Limpiar el evento cuando la escena se destruya para evitar fugas de memoria
+      this.relatedScene.events.once('shutdown', () => {
+        this.relatedScene.registry.events.off('changedata-points');
+      });
+
     }
 
     updatePoints(value) {

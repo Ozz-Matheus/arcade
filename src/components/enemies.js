@@ -109,17 +109,19 @@ export class Enemies {
       });
     }
 
-    update() {
+    update(time, delta) {
+        // Un frame a 60fps dura ~16.6ms. Usamos esto como base para crear un multiplicador.
+        const speedMultiplier = delta / 16.66;
 
-        this.formation.ACCELERATION_ON_THE_X_AXIS += this.formation.SPEED_ON_THE_X_AXIS;
+        this.formation.ACCELERATION_ON_THE_X_AXIS += (this.formation.SPEED_ON_THE_X_AXIS * speedMultiplier);
 
-        if ((this.formation.ACCELERATION_ON_THE_X_AXIS >= this.formation.JOURNEY && this.formation.SPEED_ON_THE_X_AXIS > 0) || (this.formation.ACCELERATION_ON_THE_X_AXIS <= -this.formation.JOURNEY / 2 && this.formation.SPEED_ON_THE_X_AXIS < 0)) {
+        if ((this.formation.ACCELERATION_ON_THE_X_AXIS >= this.formation.JOURNEY && this.formation.SPEED_ON_THE_X_AXIS > 0) ||
+            (this.formation.ACCELERATION_ON_THE_X_AXIS <= -this.formation.JOURNEY / 2 && this.formation.SPEED_ON_THE_X_AXIS < 0)) {
             this.formation.SPEED_ON_THE_X_AXIS = -this.formation.SPEED_ON_THE_X_AXIS;
         }
 
-        Phaser.Actions.IncX(this.enemies.getChildren(), this.formation.SPEED_ON_THE_X_AXIS);
+        Phaser.Actions.IncX(this.enemies.getChildren(), this.formation.SPEED_ON_THE_X_AXIS * speedMultiplier);
     }
-
 
     get() {
         return this.enemies;
