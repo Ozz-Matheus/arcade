@@ -1,7 +1,7 @@
 // src/components/enemies.js
 
 import { Settings } from '../settings.js';
-
+import { hudLayout } from '../utils/hudLayout.js';
 
 /* ------------------------------------------------------------------------------------------ */
 
@@ -87,9 +87,18 @@ export class Enemies {
       let frequency = 7000 - level * 500;
       if (frequency < 2500) frequency = 2500;
 
+      // ---  CÁLCULO DINÁMICO ---
+      const { leftPad, padSize } = hudLayout(this.relatedScene);
+      // Calculamos dónde empieza el HUD (borde superior del pad)
+      const topOfControls = leftPad.y - (padSize / 2);
+
+      // El objetivo de descenso ahora respeta los controles, no el borde de la pantalla
+      let descentTargetY = topOfControls - (100 - level * 10);
+
+      // Límite de seguridad por si acaso
       const H = this.relatedScene.scale.height;
-      let descentTargetY = H - (100 - level * 10);
       if (descentTargetY > H - 10) descentTargetY = H - 10;
+      // ------------------------------
 
       const enemies = this.enemies.getChildren();
       let descendingEnemies = enemies;
