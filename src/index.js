@@ -11,7 +11,7 @@ import { StartScene } from './scenes/start.js';
 
 const BASE_WIDTH = 390;
 const BASE_HEIGHT = 844;
-const DPR = Math.min(window.devicePixelRatio || 1, 2); // límite por rendimiento
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
 const config = {
   type: Phaser.AUTO,
@@ -39,9 +39,18 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     expandParent: true,
-    //parent: null,
   }
 };
 
 const game = new Phaser.Game(config);
+
 window.addEventListener('resize', () => game.scale.refresh());
+
+if (window.visualViewport) {
+    const onViewportChange = () => {
+        game.scale.refresh();
+        game.events.emit('viewport-changed');
+    };
+    window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
+    window.visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
+}

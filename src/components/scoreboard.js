@@ -2,6 +2,7 @@
 
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
+import { TextStyles } from '../utils/ui.js';
 
 export class ScoreBoard {
     constructor(scene) {
@@ -18,24 +19,18 @@ export class ScoreBoard {
       this.labels = {
         points: this.relatedScene.add.text(20, top, Texts.score(Settings.getPoints()), {
           fontSize: `${fs}px`,
-          fill: '#fff',
-          fontFamily: 'Verdana',
-          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+          ...TextStyles.hud
         }).setDepth(1000),
 
         record: this.relatedScene.add.text(width - 10, top, Texts.record(Settings.getRecord()), {
           fontSize: `${fs}px`,
-          fill: '#fff',
-          fontFamily: 'Verdana',
-          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+          ...TextStyles.hud
         }).setOrigin(1, 0).setDepth(1000),
 
         // Segunda fila centrada
         level: this.relatedScene.add.text(width / 2, top + fs + rowGap, Texts.level(Settings.getLevel()), {
           fontSize: `${fs}px`,
-          fill: '#fff',
-          fontFamily: 'Verdana',
-          shadow: { offsetX: 1, offsetY: 1, color: '#2ef', blur: 8, fill: true }
+          ...TextStyles.hud
         }).setOrigin(0.5, 0).setDepth(1000),
       };
 

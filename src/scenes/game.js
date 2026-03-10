@@ -145,7 +145,7 @@ export class Game extends Phaser.Scene {
                 //console.log('bullet');
 
                 let bulletsFired = 0;
-                const maxBullets = Bullets.MAXIMUM_NUMBER_OF_BULLETS;
+                const maxBullets = this.bullets.activeLimit;
 
                 this.bullets.get().getChildren().forEach(bullet => {
                   if (!bullet.active && !bullet.visible && bulletsFired < maxBullets) {
@@ -314,10 +314,7 @@ export class Game extends Phaser.Scene {
       this.livesDisplay.removeOneLife();
 
       // Quitar el Power UP
-      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 1;
-      this.bullets.recreate();
-      this.registerBulletCollision();
-      this.bullets.rhythm.bullets = 200;
+      this.bullets.resetPowerUp();
 
       // Ocultar jugador
       player.setActive(false).setVisible(false).disableBody(true, true);
@@ -355,21 +352,7 @@ export class Game extends Phaser.Scene {
     powerup.setVisible(false);
     powerup.body.enable = false;
 
-    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 4;
-    this.bullets.recreate();
-    this.registerBulletCollision();
-    this.bullets.rhythm.bullets = 400;
-  }
-
-  registerBulletCollision() {
-
-    this.physics.add.overlap(
-      this.enemies.get(),
-      this.bullets.get(),
-      this.handleBulletHitsEnemy,
-      null,
-      this
-    );
+    this.bullets.upgradePowerUp();
   }
 
 }
