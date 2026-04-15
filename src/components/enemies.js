@@ -14,7 +14,7 @@ export class Enemies {
     create() {
       const level = this.relatedScene.registry.get('level') || 1;
       const enemyKey = `enemies-${level}`;
-      const [mainCount, secondaryCount] = level === 1 ? [24, 24] : [36, 36];
+      const [mainCount, secondaryCount] = (level === 1 || level === 4) ? [24, 24] : [36, 36];
 
       this.enemies = this.relatedScene.physics.add.group();
 
@@ -60,16 +60,24 @@ export class Enemies {
       const totalSpan = dw + (cols - 1) * cellW;
       const startX = Math.round((W - totalSpan) / 2 + dw / 2);
 
-      // más arriba en móviles (sin pegar al HUD)
-      const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+
+      // Posición base
+      let gridTop = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+      // Si es nivel 4, empujamos a los enemigos normales 120px hacia abajo
+      if (level === 4) {
+          gridTop += 120;
+      }
 
       Phaser.Actions.GridAlign(this.enemies.getChildren(), {
         width: cols,
         cellWidth: cellW,
         cellHeight: 64,
         x: -64,
-        y: top,
+        y: gridTop, // Usamos la nueva variable aquí
       });
+
 
       // Movimiento horizontal en formación
       this.formation = {
@@ -96,21 +104,28 @@ export class Enemies {
       // ------------------------------
 
       const enemies = this.enemies.getChildren();
-      let descendingEnemies = enemies;
+
+      let descendingEnemies = enemies.filter(e => e.getData('type') !== 'boss');
+
       if (level === 1) {
-        descendingEnemies = enemies.slice(24); // solo los secundarios descienden en nivel 1
+        descendingEnemies = descendingEnemies.slice(24); // solo los secundarios descienden en nivel 1
       }
 
       // --- CÓDIGO NUEVO PARA EL BOSS ---
+
       if (level === 4) {
-        // Lo creamos centrado y un poco más arriba
-        const boss = this.enemies.create(W / 2, top - 60, 'boss-4');
+        // Obtenemos el top original para posicionar al Boss
+        const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+        // top + 50 lo despegará de los textos de Puntos/Nivel
+        const boss = this.enemies.create(W / 2, top + 50, 'boss-4');
         boss.setData('type', 'boss');
-        boss.setData('score', 1500); // Da más puntos
-        boss.setData('hp', 20);      // Necesita 20 impactos para morir
-        boss.setScale(0.8);          // Ajusta según te pase el diseño
+        boss.setData('score', 1500);
+        boss.setData('hp', 80);
+        boss.setScale(0.8);
         boss.setDepth(2);
       }
+
       // ---------------------------------
 
       this.relatedScene.tweens.add({

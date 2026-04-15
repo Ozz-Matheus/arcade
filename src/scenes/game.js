@@ -183,12 +183,21 @@ export class Game extends Phaser.Scene {
             let hp = enemies.getData('hp') - 1;
             enemies.setData('hp', hp);
 
-            // Efecto de daño visual
+            // Cambiar el frame de daño según la vida restante (asumiendo 80 HP iniciales)
+            if (hp <= 20) {
+                enemies.setFrame(3);
+            } else if (hp <= 40) {
+                enemies.setFrame(2);
+            } else if (hp <= 60) {
+                enemies.setFrame(1);
+            }
+
+            // Efecto de daño visual rápido
             enemies.setTint(0xff0000);
             this.time.delayedCall(100, () => enemies.clearTint());
             this.explosions.spawn(bullets.x, bullets.y, this.explosion_sound);
 
-            if (hp > 0) return; // Si aún tiene vida, salimos de la función
+            if (hp > 0) return;
         }
 
         // Si no es Boss, o si el Boss llegó a 0 de vida, aplicamos la muerte normal
