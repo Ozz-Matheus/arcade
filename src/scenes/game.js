@@ -175,20 +175,37 @@ export class Game extends Phaser.Scene {
 
     handleBulletHitsEnemy(enemies, bullets) {
 
+        // Desactivamos la bala siempre
+        bullets.setActive(false).setVisible(false).disableBody(true, true);
+
+        // Si es el Boss, le restamos vida
+        if (enemies.getData('type') === 'boss') {
+            let hp = enemies.getData('hp') - 1;
+            enemies.setData('hp', hp);
+
+            // Efecto de daño visual
+            enemies.setTint(0xff0000);
+            this.time.delayedCall(100, () => enemies.clearTint());
+            this.explosions.spawn(bullets.x, bullets.y, this.explosion_sound);
+
+            if (hp > 0) return; // Si aún tiene vida, salimos de la función
+        }
+
+        // Si no es Boss, o si el Boss llegó a 0 de vida, aplicamos la muerte normal
         this.explosions.spawn(enemies.x, enemies.y, this.explosion_sound);
 
         const score = enemies.getData('score') ?? 100;
         this.registry.set('points', this.registry.get('points') + score);
 
-        bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
-
         this.particles.spawn(enemies.x, enemies.y);
 
         if (Phaser.Math.Between(0, 100) < Game.DROP_RATE_POWERUP_PERCENTAGE) {
-          this.powerups.spawn(enemies.x, enemies.y);
+          const currentLevel = this.registry.get('level') || 1;
+          this.powerups.spawn(enemies.x, enemies.y, currentLevel);
         }
 
+        // Validación de fin de nivel
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
             if (Settings.isLastLevel()) {
@@ -246,12 +263,17 @@ export class Game extends Phaser.Scene {
     }
 
     onAttackHitPlayer(attack, player) {
+
+      if (player.getData('isImmune')) return;
+
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);
       this.damagePlayer(player);
     }
 
     onEnemyHitPlayer(player, enemy) {
+
+      if (player.getData('isImmune')) return;
 
       const type = enemy.getData('type');
       const score = enemy.getData('score') ?? 100;
@@ -325,12 +347,58 @@ export class Game extends Phaser.Scene {
     }
 
   handlePowerUpPickup(player, powerup) {
+      powerup.setActive(false).setVisible(false).disableBody(true, true);
 
-    powerup.setActive(false);
-    powerup.setVisible(false);
-    powerup.body.enable = false;
+      const level = this.registry.get('level') || 1;
 
-    this.bullets.upgradePowerUp();
+      switch(level) {
+          case 1:
+              // N1 - 3 disparos (Modificas tu componente bullets.js para permitir 3)
+              this.bullets.activeLimit = 3;
+              break;
+
+          case 2:
+              // N2 - Inmunidad 10 segundos
+              player.setData('isImmune', true);
+              player.setTint(0x00ff00); // Feedback visual
+              this.time.delayedCall(10000, () => {
+                  player.setData('isImmune', false);
+                  player.clearTint();
+              });
+              break;
+
+          case 3:
+              // N3 - Ralentiza naves y disparos 10 Segundos
+              this.enemies.formation.SPEED_ON_THE_X_AXIS *= 0.5; // Ralentiza enemigos
+              this.attacks.rhythm.attacks *= 2; // Disparan más lento
+
+              this.time.delayedCall(10000, () => {
+                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 2; // Vuelve a la normalidad
+                  this.attacks.rhythm.attacks /= 2;
+              });
+              break;
+
+          case 4:
+              // N4 - Velocidad X2 y parpadeo
+              const originalSpeed = player.getData('vel-x');
+              player.setData('vel-x', originalSpeed * 2);
+
+              // Efecto parpadeo
+              const blink = this.tweens.add({
+                  targets: player,
+                  alpha: 0.2,
+                  yoyo: true,
+                  repeat: -1,
+                  duration: 200
+              });
+
+              this.time.delayedCall(10000, () => {
+                  player.setData('vel-x', originalSpeed);
+                  blink.stop();
+                  player.setAlpha(1);
+              });
+              break;
+      }
   }
 
 }

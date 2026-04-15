@@ -13,46 +13,41 @@ export class Enemies {
 
     create() {
       const level = this.relatedScene.registry.get('level') || 1;
+      const enemyKey = `enemies-${level}`;
       const [mainCount, secondaryCount] = level === 1 ? [24, 24] : [36, 36];
 
       this.enemies = this.relatedScene.physics.add.group();
 
       // Crear main-enemies
       for (let i = 0; i < mainCount; i++) {
-        const enemy = this.enemies.create(0, 0, 'main-enemies');
+        const enemy = this.enemies.create(0, 0, enemyKey);
         enemy.setData('type', 'main');
       }
 
-      // Crear secondary-enemies
+      // Crear secondary-enemies usando la misma textura del nivel
       for (let i = 0; i < secondaryCount; i++) {
-        const enemy = this.enemies.create(0, 0, 'secondary-enemies');
+        const enemy = this.enemies.create(0, 0, enemyKey);
         enemy.setData('type', 'secondary');
       }
 
-      // Animaciones (protegidas para no duplicar)
+      // Animación dinámica basada en el nivel actual
       const anims = this.relatedScene.anims;
-      if (!anims.exists('main-enemies-animation')) {
+      const animKey = `enemy-anim-${level}`;
+
+      if (!anims.exists(animKey)) {
         anims.create({
-          key: 'main-enemies-animation',
-          frames: anims.generateFrameNumbers('main-enemies', { frames: [0, 1, 2] }),
-          frameRate: 5,
-          repeat: -1,
-        });
-      }
-      if (!anims.exists('secondary-enemies-animation')) {
-        anims.create({
-          key: 'secondary-enemies-animation',
-          frames: anims.generateFrameNumbers('secondary-enemies', { frames: [0, 1, 2] }),
+          key: animKey,
+          frames: anims.generateFrameNumbers(enemyKey, { frames: [0, 1, 2] }),
           frameRate: 5,
           repeat: -1,
         });
       }
 
-      // Escala y animación ANTES del grid (para calcular tamaños reales)
+      // Escala y animación
       this.enemies.getChildren().forEach(enemy => {
         enemy.setScale(0.38).setAngle(350).setDepth(2);
         enemy.setData('score', enemy.getData('type') === 'main' ? 100 : 250);
-        enemy.play(enemy.getData('type') === 'main' ? 'main-enemies-animation' : 'secondary-enemies-animation');
+        enemy.play(animKey);
       });
 
       // Centrar y subir un poco (12 cols) usando el ancho REAL del sprite
@@ -105,6 +100,18 @@ export class Enemies {
       if (level === 1) {
         descendingEnemies = enemies.slice(24); // solo los secundarios descienden en nivel 1
       }
+
+      // --- CÓDIGO NUEVO PARA EL BOSS ---
+      if (level === 4) {
+        // Lo creamos centrado y un poco más arriba
+        const boss = this.enemies.create(W / 2, top - 60, 'boss-4');
+        boss.setData('type', 'boss');
+        boss.setData('score', 1500); // Da más puntos
+        boss.setData('hp', 20);      // Necesita 20 impactos para morir
+        boss.setScale(0.8);          // Ajusta según te pase el diseño
+        boss.setDepth(2);
+      }
+      // ---------------------------------
 
       this.relatedScene.tweens.add({
         targets: descendingEnemies,
