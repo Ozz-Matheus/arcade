@@ -121,7 +121,7 @@ export class Enemies {
         const boss = this.enemies.create(W / 2, top + 50, 'boss-4');
         boss.setData('type', 'boss');
         boss.setData('score', 1500);
-        boss.setData('hp', 80);
+        boss.setData('hp', 60);
         boss.setScale(0.8);
         boss.setDepth(2);
       }
