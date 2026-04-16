@@ -238,30 +238,44 @@ export class Game extends Phaser.Scene {
         const activeEnemies = this.enemies.get().getChildren().filter(e => e.active);
         if (activeEnemies.length === 0) return;
 
-        // 3. Buscamos un proyectil que esté libre en la "pool" (inactivo)
-        const attack = this.attacks.get().getChildren().find(a => !a.active);
-        if (!attack) return;
-
-        // 4. Elegimos un enemigo al azar para que realice el disparo
+        // Elegimos un enemigo al azar para que realice el disparo
         const randomEnemy = Phaser.Utils.Array.GetRandom(activeEnemies);
 
-        this.configureEnemyAttack(attack, randomEnemy);
+        const isBoss = randomEnemy.getData('type') === 'boss';
 
-        this.tweens.add({
-            targets: randomEnemy,
-            angle: 360,
-            duration: 300,
-            yoyo: true
+        // El Boss dispara 3, los normales 1
+        const bulletsToFire = isBoss ? 3 : 1;
+        let bulletsFired = 0;
+
+        this.attacks.get().getChildren().forEach(attack => {
+            if (!attack.active && bulletsFired < bulletsToFire) {
+                bulletsFired++;
+
+                // Si es el Boss, calculamos un desfase: -40, 0, +40 px
+                const offsetX = isBoss ? 40 * (bulletsFired - 2) : 0;
+
+                this.configureEnemyAttack(attack, randomEnemy, offsetX);
+            }
         });
 
-        this.die_throw.play();
-        this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
+        if (bulletsFired > 0) {
+            this.tweens.add({
+                targets: randomEnemy,
+                angle: 360,
+                duration: 300,
+                yoyo: true
+            });
+
+            this.die_throw.play();
+            this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
+        }
     }
 
-    configureEnemyAttack(attack, enemy){
+    configureEnemyAttack(attack, enemy, offsetX = 0){
 
         attack.setActive(true).setVisible(true);
-        attack.enableBody(true, enemy.x, enemy.y,true, true);
+        // Sumamos el offsetX a la posición del enemigo
+        attack.enableBody(true, enemy.x + offsetX, enemy.y, true, true);
         attack.setScale(0.8);
 
         const level = this.registry.get('level') || 1;

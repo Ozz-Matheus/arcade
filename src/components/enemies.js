@@ -1,4 +1,4 @@
-// src/components/enemies.js
+ // src/components/enemies.js
 
 import { Settings } from '../settings.js';
 import { hudLayout } from '../utils/hudLayout.js';
