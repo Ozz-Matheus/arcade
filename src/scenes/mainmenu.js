@@ -39,10 +39,10 @@ export class MainMenu extends Phaser.Scene {
             
             // Re-posicionar botones por si cambia el alto de la pantalla
             btnStart.setPosition(currentWidth / 2, currentHeight * 0.65);
-            btnTopScores.setPosition(
-                    currentWidth / 2,
-                    btnStart.y + btnStart.height + 30
-                );
+            // btnTopScores.setPosition(
+            //         currentWidth / 2,
+            //         btnStart.y + btnStart.height + 30
+            //     );
 
         };
 
@@ -59,14 +59,14 @@ export class MainMenu extends Phaser.Scene {
         });
 
         // Botón Ver Top Scores
-        const btnTopScores = this.add.text(0, 0, Texts.viewTopScores, {
-            fontSize: `${sm}px`,
-            ...TextStyles.success
-        }).setOrigin(0.5).setInteractive();
+        // const btnTopScores = this.add.text(0, 0, Texts.viewTopScores, {
+        //     fontSize: `${sm}px`,
+        //     ...TextStyles.success
+        // }).setOrigin(0.5).setInteractive();
 
-        btnTopScores.on('pointerdown', () => {
-            window.location.href = '/top';
-        });
+        // btnTopScores.on('pointerdown', () => {
+        //     window.location.href = '/top';
+        // });
 
         // Llamamos al resize inicial y lo atamos al evento de Phaser
         resizeLogoAndButtons();
